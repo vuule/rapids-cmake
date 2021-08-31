@@ -133,3 +133,15 @@ correct export generation. These should only be used when :cmake:command:`rapids
    rapids_export_find_package_root [Advanced] </command/rapids_export_find_package_root>
    rapids_export_package [Advanced] </command/rapids_export_package>
 
+Testing
+*******
+
+The `rapids_test` functions simplify CTest components, including resource allocation.
+More information on resource allocation can be found in the rapids-cmake :ref:`Hardware Resources and Testing documentation <cpm_resource_allocation>`.
+
+.. toctree::
+   :titlesonly:
+
+   /command/rapids_test_init
+   /command/rapids_test_generate_resource_spec
+   /command/rapids_test_gpu_requirements
