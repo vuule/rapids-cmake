@@ -1,6 +1,8 @@
 
 #include <iostream>
 #include <vector>
+#include <chrono>
+#include <thread>
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -32,9 +34,11 @@ ctest_lock construct_lock(rapids_cmake::GPUAllocation const &alloc) {
 bool validate_locks(rapids_cmake::GPUAllocation const &alloc, int min_lock_id,
                     int max_lock_id) {
 
+  using namespace std::chrono_literals;
+
   // barrier
   // wait for all other tests to lock the respective sentinel file
-
+  std::this_thread::sleep_for(15000ms);
 
   int valid_count = 0;
   for (int i = min_lock_id; i <= max_lock_id; ++i) {
@@ -57,6 +61,7 @@ bool validate_locks(rapids_cmake::GPUAllocation const &alloc, int min_lock_id,
 
   // barrier again so nothing unlocks while other are checking
   // for a lock
+  std::this_thread::sleep_for(15000ms);
 
   return (valid_count == (max_lock_id - min_lock_id));
 }
