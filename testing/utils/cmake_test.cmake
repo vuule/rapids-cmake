@@ -110,7 +110,7 @@ function(add_cmake_test mode source_or_dir)
 
       add_test(NAME ${test_name}
                COMMAND ${CMAKE_COMMAND}
-               --build ${build_dir} -j3 )
+               --build ${build_dir} -j3000 )
 
       set_tests_properties(${test_name}_configure PROPERTIES FIXTURES_SETUP ${test_name})
       set_tests_properties(${test_name} PROPERTIES FIXTURES_REQUIRED ${test_name})

@@ -31,14 +31,15 @@ ctest_lock construct_lock(rapids_cmake::GPUAllocation const &alloc) {
   return ctest_lock{std::move(path), fd};
 }
 
-bool validate_locks(rapids_cmake::GPUAllocation const &alloc, int min_lock_id,
+template<typename LockValidator>
+bool validate_locks(LockValidator lock_checker, int min_lock_id,
                     int max_lock_id) {
 
   using namespace std::chrono_literals;
 
   // barrier
   // wait for all other tests to lock the respective sentinel file
-  std::this_thread::sleep_for(15000ms);
+  std::this_thread::sleep_for(5000ms);
 
   int valid_count = 0;
   for (int i = min_lock_id; i <= max_lock_id; ++i) {
@@ -46,24 +47,16 @@ bool validate_locks(rapids_cmake::GPUAllocation const &alloc, int min_lock_id,
     auto fd = open(path.c_str(), O_RDONLY);
     auto lock_state = lockf(fd, F_TEST, 0);
 
-    bool valid_lock_state = false;
-    if (i == alloc.slots)
-      // we have this file locked
-      valid_lock_state = (lock_state == 0);
-    else {
-      // some other process has this file locked
-      valid_lock_state = (lock_state == -1);
-    }
+    bool valid_lock_state = lock_checker(lock_state, i);
     if (valid_lock_state) {
       ++valid_count;
     }
   }
-
   // barrier again so nothing unlocks while other are checking
   // for a lock
-  std::this_thread::sleep_for(15000ms);
+  std::this_thread::sleep_for(2000ms);
 
-  return (valid_count == (max_lock_id - min_lock_id));
+  return (valid_count == ((max_lock_id+1) - min_lock_id));
 }
 
 void unlock(ctest_lock &lock) { close(lock.fd); }
@@ -88,12 +81,23 @@ int main() {
     return 1;
   }
 
-  // rapids_cmake::bind_to_gpu(alloc);
+  rapids_cmake::bind_to_gpu(alloc);
 
   // Lock our sentinel file
   auto lock = construct_lock(alloc);
   // verify all sentinel files are locked
-  bool all_locked = validate_locks(alloc, min_lock_id, max_lock_id);
+  auto checker = [alloc](int lock_state, int i) {
+    bool valid_lock_state = false;
+    if (i == alloc.slots) {
+      // we have this file locked
+      valid_lock_state = (lock_state == 0);
+    } else {
+      // some other process has this file locked
+      valid_lock_state = (lock_state == -1);
+    }
+    return valid_lock_state;
+  };
+  bool all_locked = validate_locks(checker, min_lock_id, max_lock_id);
   // unlock and return
   unlock(lock);
   return (all_locked) ? 0 : 1;
