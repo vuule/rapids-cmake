@@ -26,7 +26,7 @@ ctest_lock construct_lock(rapids_cmake::GPUAllocation const &alloc) {
   }
 
   auto deviceIdAsStr = std::to_string(alloc.device_id);
-  write(fd, deviceIdAsStr.c_str(), deviceIdAsStr.len());
+  write(fd, deviceIdAsStr.c_str(), deviceIdAsStr.size());
   lockf(fd, F_TLOCK, 0);
   return ctest_lock{std::move(path), fd};
 }
@@ -88,7 +88,7 @@ int main() {
     return 1;
   }
 
-  rapids_cmake::bind_to_gpu(alloc);
+  // rapids_cmake::bind_to_gpu(alloc);
 
   // Lock our sentinel file
   auto lock = construct_lock(alloc);
