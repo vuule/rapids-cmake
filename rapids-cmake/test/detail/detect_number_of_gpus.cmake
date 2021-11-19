@@ -35,35 +35,40 @@ on the machine
 function(rapids_test_detect_number_of_gpus result_variable)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.test.detect_number_of_gpus")
 
-  # Unset this first in case it's set to <empty_string> Which can happen inside rapids
   set(eval_file ${PROJECT_BINARY_DIR}/rapids-cmake/detect_gpus.cu)
   set(eval_exe ${PROJECT_BINARY_DIR}/rapids-cmake/detect_gpus)
   set(error_file ${PROJECT_BINARY_DIR}/rapids-cmake/detect_gpus.stderr.log)
+  if(NOT DEFINED CMAKE_CUDA_COMPILER AND NOT DEFINED CMAKE_CXX_COMPILER)
+    message(STATUS "rapids_test_detect_number_of_gpus no C++ or CUDA compiler enabled, presuing 1 GPU.")
+    set(rapids_gpu_count 1)
+  else()
+    if(EXISTS "${eval_exe}")
+      execute_process(COMMAND ${eval_exe} OUTPUT_VARIABLE rapids_gpu_count)
+      message(STATUS "rapids_test_detect_number_of_gpus:  execute_process")
+    else()
+      if(NOT EXISTS "${eval_file}")
+        file(WRITE ${eval_file}
+  [=[
+  #include <cstdio>
+  int main(int, char**) {
+    int nDevices = 0;
+    cudaGetDeviceCount(&nDevices);
+    printf("%d", nDevices);
+    return 0;
+  }
+  ]=])
+      endif()
 
-  set(rapids_gpu_count 1)
-
-  if(EXISTS "${eval_exe}")
-    execute_process(COMMAND ${eval_exe} OUTPUT_VARIABLE rapids_gpu_count)
-  elseif(DEFINED CMAKE_CUDA_COMPILER)
-
-    if(NOT EXISTS "${eval_file}")
-      file(WRITE ${eval_file}
-[=[
-#include <cstdio>
-int main(int, char**) {
-  int nDevices = 0;
-  cudaGetDeviceCount(&nDevices);
-  printf("%d", nDevices);
-  return 0;
-}
-]=])
+      find_package(CUDAToolkit)
+      set(compiler ${CMAKE_CXX_COMPILER})
+      if(DEFINED CMAKE_CUDA_COMPILER)
+        set(compiler ${CMAKE_CUDA_COMPILER})
+      endif()
+      execute_process(COMMAND ${compiler} -o ${eval_exe} -I${CUDAToolkit_INCLUDE_DIRS}
+                      ERROR_FILE ${error_file})
+      execute_process(COMMAND ${eval_exe} OUTPUT_VARIABLE rapids_gpu_count)
     endif()
-
-    execute_process(COMMAND ${CMAKE_CUDA_COMPILER} -std=c++11 -o ${eval_exe} --run ${eval_file}
-                    OUTPUT_VARIABLE rapids_gpu_count OUTPUT_STRIP_TRAILING_WHITESPACE
-                    ERROR_FILE ${error_file})
   endif()
-
   set(${result_variable} ${rapids_gpu_count} PARENT_SCOPE)
 
 endfunction()
