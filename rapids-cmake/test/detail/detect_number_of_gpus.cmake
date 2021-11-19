@@ -35,7 +35,7 @@ on the machine
 function(rapids_test_detect_number_of_gpus result_variable)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.test.detect_number_of_gpus")
 
-  set(eval_file ${PROJECT_BINARY_DIR}/rapids-cmake/detect_gpus.cu)
+  set(eval_file ${PROJECT_BINARY_DIR}/rapids-cmake/detect_gpus.cpp)
   set(eval_exe ${PROJECT_BINARY_DIR}/rapids-cmake/detect_gpus)
   set(error_file ${PROJECT_BINARY_DIR}/rapids-cmake/detect_gpus.stderr.log)
   if(NOT DEFINED CMAKE_CUDA_COMPILER AND NOT DEFINED CMAKE_CXX_COMPILER)
@@ -49,6 +49,7 @@ function(rapids_test_detect_number_of_gpus result_variable)
       if(NOT EXISTS "${eval_file}")
         file(WRITE ${eval_file}
   [=[
+  #include <cuda_runtime_api.h>
   #include <cstdio>
   int main(int, char**) {
     int nDevices = 0;
@@ -64,8 +65,9 @@ function(rapids_test_detect_number_of_gpus result_variable)
       if(DEFINED CMAKE_CUDA_COMPILER)
         set(compiler ${CMAKE_CUDA_COMPILER})
       endif()
-      execute_process(COMMAND ${compiler} -o ${eval_exe} -I${CUDAToolkit_INCLUDE_DIRS}
+      execute_process(COMMAND ${compiler} ${eval_file} -o ${eval_exe} -I${CUDAToolkit_INCLUDE_DIRS} -L${CUDAToolkit_LIBRARY_DIR} -lcudart
                       ERROR_FILE ${error_file})
+      message(STATUS "error_file: ${error_file}")
       execute_process(COMMAND ${eval_exe} OUTPUT_VARIABLE rapids_gpu_count)
     endif()
   endif()
