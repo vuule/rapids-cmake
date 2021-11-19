@@ -22,6 +22,7 @@ rapids_test_init()
 
 add_executable(verify_multi_concurrent main.cpp)
 target_link_libraries(verify_multi_concurrent PRIVATE RAPIDS::test)
+target_include_directories(verify_multi_concurrent PRIVATE "${rapids-cmake-testing-dir}/test/")
 target_compile_definitions(verify_multi_concurrent PRIVATE "BINARY_DIR=${CMAKE_BINARY_DIR}")
 
 enable_testing()
