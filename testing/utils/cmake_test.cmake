@@ -129,7 +129,7 @@ function(add_cmake_test mode source_or_dir)
       set_tests_properties(${test_name}_build PROPERTIES DEPENDS ${test_name}_configure)
 
       add_test(NAME ${test_name}
-               COMMAND ${CMAKE_CTEST_COMMAND} -C Debug
+               COMMAND ${CMAKE_CTEST_COMMAND} -C Debug -j400 -VV
                WORKING_DIRECTORY ${build_dir})
 
       set_tests_properties(${test_name}_configure PROPERTIES FIXTURES_SETUP ${test_name})

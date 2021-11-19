@@ -39,7 +39,7 @@ add_cmake_config_test(init-existing-specfile.cmake)
 add_cmake_config_test(init-simple.cmake)
 
 add_cmake_ctest_test(init-activate_allocation_simple)
-add_cmake_ctest_test(init-activate_multi_jobs_multi_gpu)
+# add_cmake_ctest_test(init-activate_multi_jobs_multi_gpu)
 add_cmake_ctest_test(init-activate_multi_jobs_single_gpu)
 add_cmake_ctest_test(init-impossible_allocation SHOULD_FAIL "Insufficient resources for test")
 

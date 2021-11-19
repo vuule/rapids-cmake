@@ -9,13 +9,17 @@
 
 #include "rapids_cmake_ctest_allocation.hpp"
 
+#define DefineToString(a) define_to_str(a)
+#define define_to_str(a) #a
+
 struct ctest_lock {
   std::string file_name;
   int fd;
 };
 
 std::string lock_file_name(int v) {
-  return std::string("lock." + std::to_string(v));
+  const static std::string dir = DefineToString(BINARY_DIR);
+  return std::string(dir + "/lock." + std::to_string(v));
 }
 
 ctest_lock construct_lock(rapids_cmake::GPUAllocation const &alloc) {
@@ -95,6 +99,7 @@ int main() {
       // some other process has this file locked
       valid_lock_state = (lock_state == -1);
     }
+    std::cout << i << " lock_state: " << lock_state << " valid " << valid_lock_state << std::endl;
     return valid_lock_state;
   };
   bool all_locked = validate_locks(checker, min_lock_id, max_lock_id);
