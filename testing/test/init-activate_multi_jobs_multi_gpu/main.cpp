@@ -1,18 +1,20 @@
 
-#include <iostream>
-#include <vector>
 #include <chrono>
+#include <iostream>
 #include <thread>
+#include <vector>
 
 #include <fcntl.h>
 #include <unistd.h>
 
-#include "rapids_cmake_ctest_allocation.hpp"
+#include <cuda_runtime_api.h>
+
 #include "detail/file_locker.hpp"
+#include "rapids_cmake_ctest_allocation.hpp"
 
 int main() {
-  const constexpr int min_lock_id = 10;
-  const constexpr int max_lock_id = 15;
+  const constexpr int min_lock_id = 20;
+  const constexpr int max_lock_id = 25;
 
   // first verify our allocation
   auto allocations = rapids_cmake::full_allocation();
@@ -25,9 +27,20 @@ int main() {
   if (alloc.slots < min_lock_id || alloc.slots > max_lock_id) {
     std::cerr << alloc.slots << std::endl;
     std::cerr << "Incorrect portion of GPU allocation, was expecting a value "
-                 "between 10 - 15"
+                 "between 20 - 25"
               << std::endl;
     return 1;
+  }
+
+  // check how many GPUs we have.
+  // if we have 1 gpu we don't want to do anything
+  int nDevices = 0;
+  cudaGetDeviceCount(&nDevices);
+
+  if (nDevices < 2) {
+    std::cout << "Detected: " << nDevices
+              << " CUDA devices, while we require 2+" << std::endl;
+    return 0;
   }
 
   rapids_cmake::bind_to_gpu(alloc);
@@ -45,7 +58,8 @@ int main() {
       // some other process has this file locked
       valid_lock_state = (lock_state == -1);
     }
-    std::cout << i << " lock_state: " << lock_state << " valid " << valid_lock_state << std::endl;
+    std::cout << i << " lock_state: " << lock_state << " valid "
+              << valid_lock_state << std::endl;
     return valid_lock_state;
   };
   bool all_locked = validate_locks(checker, min_lock_id, max_lock_id);

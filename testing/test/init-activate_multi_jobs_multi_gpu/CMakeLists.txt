@@ -20,13 +20,19 @@ include(${rapids-cmake-dir}/rapids-test.cmake)
 
 rapids_test_init()
 
+find_package(CUDAToolkit REQUIRED)
+
 add_executable(verify_multi_concurrent main.cpp)
-target_link_libraries(verify_multi_concurrent PRIVATE RAPIDS::test)
+target_link_libraries(verify_multi_concurrent PRIVATE RAPIDS::test CUDA::toolkit)
+target_include_directories(verify_multi_concurrent PRIVATE "${rapids-cmake-testing-dir}/test/")
+target_compile_definitions(verify_multi_concurrent PRIVATE "BINARY_DIR=${CMAKE_BINARY_DIR}")
 
 enable_testing()
 
-foreach(v RANGE 8)
+foreach(v RANGE 5)
   add_test(NAME concurrent_test_${v} COMMAND verify_multi_concurrent)
-  rapids_test_gpu_requirements(concurrent_test_${v} GPUS 1 PERCENT 10)
+  # that way our tests have slot values of 20, 21, 22, ...
+  # which when run in parallel will take at most 2 GPUs to execute
+  rapids_test_gpu_requirements(concurrent_test_${v} GPUS 1 PERCENT 2${v})
 endforeach()
 

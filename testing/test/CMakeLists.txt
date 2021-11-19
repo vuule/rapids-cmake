@@ -39,17 +39,10 @@ add_cmake_config_test(init-existing-specfile.cmake)
 add_cmake_config_test(init-simple.cmake)
 
 add_cmake_ctest_test(init-activate_allocation_simple)
-# add_cmake_ctest_test(init-activate_multi_jobs_multi_gpu)
+add_cmake_ctest_test(init-activate_multi_jobs_multi_gpu)
 add_cmake_ctest_test(init-activate_multi_jobs_single_gpu)
 add_cmake_ctest_test(init-impossible_allocation SHOULD_FAIL "Insufficient resources for test")
 
-# need a test where we generate multiple tests
-# each that require a portion of a gpu, and validate
-# that they run in parallel. How?
-
-# need a test where we generate multiple tests
-# each that require a different gpu, and validate
-# that they run in parallel. How?
 
 # need a test where we don't write ctest_resource_spec
 # verify that we have an empty gpu allocation vector
