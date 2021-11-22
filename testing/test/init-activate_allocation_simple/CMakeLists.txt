@@ -29,5 +29,5 @@ rapids_test_gpu_requirements(simple_test GPUS 1)
 
 # Validate that the test runs correctly
 set_tests_properties(simple_test
-  PROPERTIES PASS_REGULAR_EXPRESSION "bound to a GPU"
+  PROPERTIES PASS_REGULAR_EXPRESSION "using all of one GPU"
   )
