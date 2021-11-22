@@ -115,13 +115,17 @@ The C++ API in "rapids_cmake_ctest_allocation.hpp" ( Offered by the `RAPIDS::tes
 over the two primary patterns for GPU testing and how you would use :cmake:command:`rapids_test_gpu_requirements` to set them up.
 
   * You want acquire full utilization on two (or more) GPUs without anything else running.
-  This is accomplished with `rapids_test_gpu_requirements(<test> GPUS 2 )`
+    This is accomplished by stating you require 100% of two ( ore more) GPUs.
 
   * You want two ( or more ) partial GPU allocations to verify CUDA features like
     'Per Thread CUDA Stream'. In this case you don't care if you are allocated multiple
-    distinct GPUs but need to support such an allocation if given to you
+    distinct GPUs but need to support such an allocation if given to you. This is
+    accomplished by specifying a GPU percentage amount less than 50% so that both
+    allocations can be provided by the same phyical GPU.
 
-<blash> blash
+
+In the below CMake example `test_mutli_gpu` represents the first case, and `test_cuda_streams`
+the second.
 
 .. code-block:: cmake
 
@@ -132,14 +136,18 @@ over the two primary patterns for GPU testing and how you would use :cmake:comma
   enable_testing()
   rapids_test_init()
 
-  add_executable( mult_gpu test.cu )
+  add_executable( mult_gpu mtest.cu )
   target_link_libraries( mult_gpu PRIVATE RAPIDS::test )
 
-  add_executable( test_streams test.cu )
+  add_executable( test_streams stest.cu )
   target_link_libraries( test_streams PRIVATE RAPIDS::test )
 
   add_test(NAME test_mutli_gpu COMMAND mult_gpu)
   rapids_test_gpu_requirements(test_very_large_alloc GPUS 2)
 
   add_test(NAME test_cuda_streams COMMAND test_streams)
-  rapids_test_gpu_requirements(test_cuda_streams GPUS 2 PERCENT 40)
+  rapids_test_gpu_requirements(test_cuda_streams GPUS 6 PERCENT 10)
+
+
+Now onto the C++ side!
+
