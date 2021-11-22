@@ -25,6 +25,8 @@ struct GPUAllocation {
   int slots;
 };
 
+bool using_resources();
+
 std::vector<GPUAllocation> full_allocation();
 std::vector<int> gpu_ids();
 

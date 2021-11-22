@@ -27,12 +27,8 @@
 namespace rapids_cmake {
 
 namespace {
-GPUAllocation defaultGPUAllocation() {
-  int dev_id = 0;
-  auto error_v = cudaGetDevice(&dev_id);
-  if (error_v == cudaSuccess)
-    return GPUAllocation{dev_id, 1};
-  return GPUAllocation{0, 1};
+GPUAllocation noGPUAllocation() {
+  return GPUAllocation{-1, -1};
 }
 
 GPUAllocation parseCTestAllocation(std::string_view env_variable) {
@@ -57,7 +53,7 @@ std::vector<GPUAllocation> determineGPUAllocations() {
   std::vector<GPUAllocation> allocations;
   const auto *resource_count = std::getenv("CTEST_RESOURCE_GROUP_COUNT");
   if (!resource_count) {
-    allocations.push_back(std::move(defaultGPUAllocation()));
+    allocations.push_back(std::move(noGPUAllocation()));
     return allocations;
   }
 
@@ -78,6 +74,12 @@ std::vector<GPUAllocation> determineGPUAllocations() {
   return allocations;
 }
 } // namespace
+
+bool using_resources()
+{
+  const auto *resource_count = std::getenv("CTEST_RESOURCE_GROUP_COUNT");
+  return resource_count != nullptr;
+}
 
 std::vector<GPUAllocation> full_allocation() {
   return determineGPUAllocations();
@@ -100,11 +102,12 @@ int bind_to_gpu(GPUAllocation const &alloc) {
 int bind_to_gpu(int const &gpuId) { return cudaSetDevice(gpuId); }
 
 bool bind_to_first_gpu() {
-  std::vector<GPUAllocation> allocs = determineGPUAllocations();
-  if (allocs.empty()) {
-    return false;
+  if(using_resources())
+  {
+    std::vector<GPUAllocation> allocs = determineGPUAllocations();
+    return (bind_to_gpu(allocs[0]) == cudaSuccess);
   }
-  return (bind_to_gpu(allocs[0]) == cudaSuccess);
+  return false;
 }
 
 } // namespace rapids_cmake

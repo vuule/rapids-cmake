@@ -42,13 +42,7 @@ add_cmake_ctest_test(init-activate_allocation_simple)
 add_cmake_ctest_test(init-activate_multi_jobs_multi_gpu)
 add_cmake_ctest_test(init-activate_multi_jobs_single_gpu)
 add_cmake_ctest_test(init-impossible_allocation SHOULD_FAIL "Insufficient resources for test")
-
-
-# need a test where we don't write ctest_resource_spec
-# verify that we have an empty gpu allocation vector
-
-# need a test where we mark a test as having 50 slots
-# of a single gpu. verify slots extraction is correct
+add_cmake_ctest_test(init-with_no_resource_spec)
 
 # need a test where we mark a test as having 0 GPU's
 # but we have a resource spec, verify slots/empty is correct

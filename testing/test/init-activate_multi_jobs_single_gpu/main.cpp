@@ -30,7 +30,9 @@ int main() {
     return 1;
   }
 
-  rapids_cmake::bind_to_gpu(alloc);
+  if( rapids_cmake::using_resources() ) {
+    rapids_cmake::bind_to_gpu(alloc);
+  }
 
   // Lock our sentinel file
   auto lock = ctest_lock(alloc);
