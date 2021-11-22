@@ -137,7 +137,7 @@ Testing
 *******
 
 The `rapids_test` functions simplify CTest components, including resource allocation.
-More information on resource allocation can be found in the rapids-cmake :ref:`Hardware Resources and Testing documentation <cpm_resource_allocation>`.
+More information on resource allocation can be found in the rapids-cmake :ref:`Hardware Resources and Testing documentation <rapids_resource_allocation>`.
 
 .. toctree::
    :titlesonly:

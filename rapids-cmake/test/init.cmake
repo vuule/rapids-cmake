@@ -44,8 +44,9 @@ On the CMake side the tests will need to link to the `RAPIDS::test` target:
 
 This will allow the C++ test to use the rapids_cmake C++ API. For tests
 that require a single GPU the following C++ code should be used. If
-you test requires multiple GPUs please read the C++ API documentation
-found in `rapids_cmake_test_allocation.hpp` for guidance.
+you test requires multiple GPUs please read the
+:ref:`multi-gpu documentation section <rapids_multi_gpu_allocation>` for
+guidance.
 
 .. code-block:: cpp
 int main(int, char**) {
