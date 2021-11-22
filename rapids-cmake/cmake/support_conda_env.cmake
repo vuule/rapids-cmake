@@ -30,6 +30,7 @@ Establish a target that holds the CONDA include and link directories.
 Creates a global interface target called `target_name` that holds
 the CONDA include and link directories, when executed.
 
+<<<<<<< HEAD
 Also offers the ability to modify :cmake:variable:`CMAKE_PREFIX_PATH <cmake:variable:CMAKE_PREFIX_PATH>` to
 include the paths in environment variables `PREFIX`, `BUILD_PREFIX`,
 and `CONDA_PREFIX` based on the current CONDA environment.

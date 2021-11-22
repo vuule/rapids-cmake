@@ -30,14 +30,37 @@ for parallel tests
 
 Generates a json resource specification file representing the machines GPUs
 using system introspection. This will allow CTest to schedule multiple
-single-gpu tests in parallel on multi-gpu machines.
+single-gpu or multi-gpu tests in parallel on multi-gpu machines.
 
-<todo>
- document quickly the json file format
+For tests to execute correctly on the assigned GPU they need to bind
+to the reserved/allocated GPU. For C++ projects rapids-cmake provides
+an API to make this easy.
+
+On the CMake side the tests will need to link to the `RAPIDS::test` target:
+
+.. code-block:: cmake
+
+  target_link_libraries(<cxx_test_program> PRIVATE RAPIDS::test)
+
+This will allow the C++ test to use the rapids_cmake C++ API. For tests
+that require a single GPU the following C++ code should be used. If
+you test requires multiple GPUs please read the C++ API documentation
+found in `rapids_cmake_test_allocation.hpp` for guidance.
+
+.. code-block:: cpp
+int main(int, char**) {
+  // Only bind to the CTest provided GPU when executed via 'ctest'
+  if ( rapids_cmake::using_resources()) {
+    rapids_cmake::bind_to_first_gpu();
+  }
+  // The rest of your `int main()` logic
+
+  return 0;
+}
 
 .. note::
     To ensure that tests are run on a subset of GPUs, the `CUDA_VISIBLE_DEVICES`
-    enviornment variable will need to be set when executing CMake so that
+    environment variable will need to be set when executing CMake so that
     the generated json file is aware of what GPUs to use.
 
 Result Variables

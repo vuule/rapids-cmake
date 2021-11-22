@@ -42,7 +42,7 @@ files to be generated.
 
 .. note::
     To ensure that tests are run on a subset of GPUs, the `CUDA_VISIBLE_DEVICES`
-    enviornment variable will need to be set when executing CMake so that
+    environment variable will need to be set when executing CMake so that
     the generated json file is aware of what GPUs to use.
 
     Unlike rapids_test_init this doesn't set CTEST_RESOURCE_SPEC_FILE
