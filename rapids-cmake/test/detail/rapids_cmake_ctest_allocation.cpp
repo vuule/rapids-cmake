@@ -85,21 +85,9 @@ std::vector<GPUAllocation> full_allocation() {
   return determineGPUAllocations();
 }
 
-std::vector<int> gpu_ids() {
-  auto gpus = determineGPUAllocations();
-  std::vector<int> gids;
-  gids.reserve(gpus.size());
-  std::transform(gpus.begin(), gpus.end(), std::back_inserter(gids),
-                 [](GPUAllocation &ga) -> int { return ga.device_id; });
-
-  return gids;
-}
-
 int bind_to_gpu(GPUAllocation const &alloc) {
   return cudaSetDevice(alloc.device_id);
 }
-
-int bind_to_gpu(int const &gpuId) { return cudaSetDevice(gpuId); }
 
 bool bind_to_first_gpu() {
   if(using_resources())
