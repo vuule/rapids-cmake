@@ -44,7 +44,6 @@ function(rapids_test_detect_number_of_gpus result_variable)
   else()
     if(EXISTS "${eval_exe}")
       execute_process(COMMAND ${eval_exe} OUTPUT_VARIABLE rapids_gpu_count)
-      message(STATUS "rapids_test_detect_number_of_gpus:  execute_process")
     else()
       if(NOT EXISTS "${eval_file}")
         file(WRITE ${eval_file}
