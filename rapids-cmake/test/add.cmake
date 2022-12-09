@@ -63,4 +63,27 @@ function(rapids_test_add)
   set(multi_value COMMAND)
   cmake_parse_arguments(_RAPIDS_TEST "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
+  if(NOT DEFINED _RAPIDS_TEST_NAME)
+    message(FATAL_ERROR "rapids_add_test called without a name")
+  endif()
+
+  if(NOT DEFINED _RAPIDS_TEST_COMMAND)
+    message(FATAL_ERROR "rapids_add_test called without a command")
+  endif()
+
+  list(POP_FRONT _RAPIDS_TEST_COMMAND command)
+  set(args "${_RAPIDS_TEST_COMMAND}")
+  if(TARGET ${command})
+    set(command "$<TARGET_FILE:${command}>")
+  endif()
+
+  if(NOT DEFINED _RAPIDS_TEST_WORKING_DIRECTORY)
+    set(_RAPIDS_TEST_WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}")
+  endif()
+
+  add_test(NAME ${_RAPIDS_TEST_NAME}
+           COMMAND ${CMAKE_COMMAND}  "-Dcommand_to_run=${command}" "-Dcommand_args=${args}" -P "${run_gpu_test_script}"
+           WORKING_DIRECTORY "${_RAPIDS_TEST_WORKING_DIRECTORY}")
+  rapids_test_gpu_requirements(${_RAPIDS_TEST_NAME} GPUS ${_RAPIDS_TEST_GPUS} PERCENT ${_RAPIDS_TEST_PERCENT})
+
 endfunction()
