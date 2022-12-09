@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2022, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ include_guard(GLOBAL)
 rapids_test_detect_number_of_gpus
 ----------------------------------
 
-.. versionadded:: v22.02.00
+.. versionadded:: v23.02.00
 
 Detect the number of GPUs on the local machine
 
@@ -39,7 +39,7 @@ function(rapids_test_detect_number_of_gpus result_variable)
   set(eval_exe ${PROJECT_BINARY_DIR}/rapids-cmake/detect_gpus)
   set(error_file ${PROJECT_BINARY_DIR}/rapids-cmake/detect_gpus.stderr.log)
   if(NOT DEFINED CMAKE_CUDA_COMPILER AND NOT DEFINED CMAKE_CXX_COMPILER)
-    message(STATUS "rapids_test_detect_number_of_gpus no C++ or CUDA compiler enabled, presuing 1 GPU.")
+    message(STATUS "rapids_test_detect_number_of_gpus no C++ or CUDA compiler enabled, presuming 1 GPU.")
     set(rapids_gpu_count 1)
   else()
     if(EXISTS "${eval_exe}")
@@ -66,8 +66,12 @@ function(rapids_test_detect_number_of_gpus result_variable)
       endif()
       execute_process(COMMAND ${compiler} ${eval_file} -o ${eval_exe} -I${CUDAToolkit_INCLUDE_DIRS} -L${CUDAToolkit_LIBRARY_DIR} -lcudart
                       ERROR_FILE ${error_file})
-      message(STATUS "error_file: ${error_file}")
-      execute_process(COMMAND ${eval_exe} OUTPUT_VARIABLE rapids_gpu_count)
+      if(NOT EXISTS "${eval_exe}")
+        message(STATUS "rapids_test_detect_number_of_gpus failed to build detection executable, presuming 1 GPU.")
+        message(STATUS "rapids_test_detect_number_of_gpus compile failure details found in ${error_file}")
+      else()
+        execute_process(COMMAND ${eval_exe} OUTPUT_VARIABLE rapids_gpu_count)
+      endif()
     endif()
   endif()
   set(${result_variable} ${rapids_gpu_count} PARENT_SCOPE)

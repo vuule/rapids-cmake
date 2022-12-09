@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2022, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ include_guard(GLOBAL)
 rapids_test_init
 ----------------
 
-.. versionadded:: v22.02.00
+.. versionadded:: v23.02.00
 
 Establish necessary components for CTest gpu resource allocation to allow
 for parallel tests
@@ -32,37 +32,18 @@ Generates a json resource specification file representing the machines GPUs
 using system introspection. This will allow CTest to schedule multiple
 single-gpu or multi-gpu tests in parallel on multi-gpu machines.
 
-For tests to execute correctly on the assigned GPU they need to bind
-to the reserved/allocated GPU. For C++ projects rapids-cmake provides
-an API to make this easy.
-
-On the CMake side the tests will need to link to the `RAPIDS::test` target:
+For tests to execute correctly they will need to use the
+:cmake:command:`rapids_test_add` to register GPU requirements:
 
 .. code-block:: cmake
 
-  target_link_libraries(<cxx_test_program> PRIVATE RAPIDS::test)
+  enable_testing()
+  include(rapids-test)
+  rapids_test_init()
 
-This will allow the C++ test to use the rapids_cmake C++ API. For tests
-that require a single GPU the following C++ code should be used. If
-you test requires multiple GPUs please read the
-:ref:`multi-gpu documentation section <rapids_multi_gpu_allocation>` for
-guidance.
-
-.. code-block:: cpp
-int main(int, char**) {
-  // Only bind to the CTest provided GPU when executed via 'ctest'
-  if ( rapids_cmake::using_resources()) {
-    rapids_cmake::bind_to_first_gpu();
-  }
-  // The rest of your `int main()` logic
-
-  return 0;
-}
-
-.. note::
-    To ensure that tests are run on a subset of GPUs, the `CUDA_VISIBLE_DEVICES`
-    environment variable will need to be set when executing CMake so that
-    the generated json file is aware of what GPUs to use.
+  add_executable( test_example test.cu )
+  rapids_test_add(NAME single_gpu_alloc COMMAND test_example GPUS 1)
+  rapids_test_add(NAME two_gpu_alloc COMMAND test_example GPUS 2)
 
 Result Variables
 ^^^^^^^^^^^^^^^^

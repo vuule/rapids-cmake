@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2022, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ include_guard(GLOBAL)
 rapids_test_generate_resource_spec
 ----------------------------------
 
-.. versionadded:: v22.02.00
+.. versionadded:: v23.02.00
 
 Generates a json resource specification file representing the machines GPUs
 using system introspection.
@@ -41,10 +41,6 @@ files to be generated.
 ``DETECT``
 
 .. note::
-    To ensure that tests are run on a subset of GPUs, the `CUDA_VISIBLE_DEVICES`
-    environment variable will need to be set when executing CMake so that
-    the generated json file is aware of what GPUs to use.
-
     Unlike rapids_test_init this doesn't set CTEST_RESOURCE_SPEC_FILE
 
 #]=======================================================================]

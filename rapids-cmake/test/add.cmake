@@ -16,8 +16,8 @@
 include_guard(GLOBAL)
 
 #[=======================================================================[.rst:
-rapids_test_gpu_requirements
-----------------------------
+rapids_test_add
+---------------
 
 .. versionadded:: v23.02.00
 
@@ -25,11 +25,12 @@ States how many GPUs and what precent of each a test requires
 
   .. code-block:: cmake
 
-    rapids_test_generate_resource_spec( test_name GPUS <N> [PERCENT <value>])
+    rapids_test_add(NAME <name> COMMAND <target|command> [<args>...]
+                    GPUS <N> [PERCENT <value>]
+                    [WORKING_DIRECTORY <dir>])
 
-This function should only be used when :cmake:command:`rapids_test_add` is
-insufficient due to the rapids-cmake test wrappers not working for your
-project.
+Add a test called `<name>` which will be executed with a given GPU
+resource allocation.
 
 When combined with :cmake:command:`rapids_test_init` informs CTest what
 resources should be allocated to a test so that when testing in parallel
@@ -37,41 +38,29 @@ oversubscription doesn't occur. Without this information user execution of
 CTest with high parallel levels will cause multiple tests to run on the
 same GPU and quickly exhaust all memory.
 
+``COMMAND``
+  Specify the test command-line. If <command> specifies an executable target
+  (created by add_executable()) it will automatically be replaced by the location of the
+  executable created at build time.
 
 ``GPUS``
   State how many GPUs this test requires. Allows CTest to not over-subscribe
   a machines hardware.
 
 ``PERCENT``
-  State how much of each GPU this test requires. In general 100,50, and 20
-  are commonly used values. By default if no percent is provided, 100 is
-  used.
+  By default if no percent is provided, 100 is used.
+  State how much of each GPU this test requires.
+
+``WORKING_DIRECTORY``
+  Specify the working directory in which to execute the test. If not specified the test will
+  be run with the current working directory set to the value of :cmake:variable:`CMAKE_CURRENT_BINARY_DIR <cmake:variable:CMAKE_CURRENT_BINARY_DIR>`.
+
 
 #]=======================================================================]
-function(rapids_test_gpu_requirements test_name )
+function(rapids_test_add)
   set(options)
-  set(one_value GPUS PERCENT)
-  set(multi_value)
+  set(one_value NAME WORKING_DIRECTORY GPUS PERCENT)
+  set(multi_value COMMAND)
   cmake_parse_arguments(_RAPIDS_TEST "${options}" "${one_value}" "${multi_value}" ${ARGN})
-
-  set(gpus ${_RAPIDS_TEST_GPUS})
-  if(NOT gpus)
-    message(FATAL_ERROR "rapids_test_gpu_requirements requires the GPUS option to be provided.")
-  endif()
-  if(gpus LESS 1 OR (NOT gpus MATCHES "^[0-9]+$"))
-    message(FATAL_ERROR "rapids_test_gpu_requirements GPUS requires a numeric value ( >= 1) provided ${gpus}.")
-  endif()
-
-  set(percent 100)
-  if(DEFINED _RAPIDS_TEST_PERCENT)
-    set(percent ${_RAPIDS_TEST_PERCENT})
-  endif()
-
-  # verify that percent is inside the allowed bounds
-  if(percent GREATER 100 OR percent LESS 1 OR (NOT percent MATCHES "^[0-9]+$"))
-    message(FATAL_ERROR "rapids_test_gpu_requirements requires a numeric PERCENT value [1-100].")
-  endif()
-
-  set_property(TEST ${test_name} PROPERTY RESOURCE_GROUPS "${gpus},gpus:${percent}")
 
 endfunction()
