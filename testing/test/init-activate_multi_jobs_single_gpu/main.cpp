@@ -7,40 +7,21 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include "rapids_cmake_ctest_allocation.hpp"
 #include "detail/file_locker.hpp"
 
-int main() {
-  const constexpr int min_lock_id = 10;
-  const constexpr int max_lock_id = 15;
+int main(int argc, char** argv) {
+  const constexpr int min_lock_id = 0;
+  const constexpr int max_lock_id = 5;
 
-  // first verify our allocation
-  auto allocations = rapids_cmake::full_allocation();
-  if (allocations.size() != 1) {
-    std::cerr << "Incorrect number of GPU allocation, was expecting 1"
-              << std::endl;
-    return 1;
-  }
-  auto &alloc = allocations[0];
-  if (alloc.slots < min_lock_id || alloc.slots > max_lock_id) {
-    std::cerr << alloc.slots << std::endl;
-    std::cerr << "Incorrect portion of GPU allocation, was expecting a value "
-                 "between 10 - 15"
-              << std::endl;
-    return 1;
-  }
-
-  if( rapids_cmake::using_resources() ) {
-    rapids_cmake::bind_to_gpu(alloc);
-  }
 
   // Lock our sentinel file
-  auto lock = ctest_lock(alloc);
+  auto my_id = std::...(argv[1]);
+  auto lock = ctest_lock(argv[1]);
 
   // verify all sentinel files are locked
   auto checker = [alloc](int lock_state, int i) {
     bool valid_lock_state = false;
-    if (i == alloc.slots) {
+    if (i == my_id) {
       // we have this file locked
       valid_lock_state = (lock_state == 0);
     } else {

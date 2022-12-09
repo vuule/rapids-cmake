@@ -143,5 +143,6 @@ More information on resource allocation can be found in the rapids-cmake :ref:`H
    :titlesonly:
 
    /command/rapids_test_init
+   /command/rapids_test_add
    /command/rapids_test_generate_resource_spec
    /command/rapids_test_gpu_requirements

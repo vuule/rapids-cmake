@@ -16,4 +16,5 @@
 include_guard(GLOBAL)
 
 include(${CMAKE_CURRENT_LIST_DIR}/test/init.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/test/add.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/test/gpu_requirements.cmake)

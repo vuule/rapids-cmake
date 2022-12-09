@@ -61,8 +61,4 @@ function(rapids_test_init )
     set(CTEST_RESOURCE_SPEC_FILE "${PROJECT_BINARY_DIR}/resource_spec.json" PARENT_SCOPE)
   endif()
 
-
-  include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/generate_compute_allocation.cmake)
-  rapids_test_generate_compute_allocation(RAPIDS test)
-
 endfunction()

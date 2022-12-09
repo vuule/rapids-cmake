@@ -21,8 +21,6 @@ include(${rapids-cmake-dir}/rapids-test.cmake)
 rapids_test_init()
 
 add_executable(verify_alloc_hook main.cpp)
-target_link_libraries(verify_alloc_hook PRIVATE RAPIDS::test)
 
 enable_testing()
-add_test(NAME simple_test COMMAND verify_alloc_hook)
-rapids_test_gpu_requirements(simple_test GPUS 25)
+rapids_test_add(NAME simple_test COMMAND verify_alloc_hook simple_test GPUS 25)

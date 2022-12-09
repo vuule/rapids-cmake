@@ -21,16 +21,13 @@ include(${rapids-cmake-dir}/rapids-test.cmake)
 rapids_test_init()
 
 add_executable(verify_multi_concurrent main.cpp)
-target_link_libraries(verify_multi_concurrent PRIVATE RAPIDS::test)
-target_include_directories(verify_multi_concurrent PRIVATE "${rapids-cmake-testing-dir}/test/")
+target_link_libraries(verify_multi_concurrent PRIVATE CUDA::toolkit)
 target_compile_definitions(verify_multi_concurrent PRIVATE "BINARY_DIR=${CMAKE_BINARY_DIR}")
 
 enable_testing()
 
 foreach(v RANGE 5)
-  add_test(NAME concurrent_test_${v} COMMAND verify_multi_concurrent)
-  # that way our tests have slot values of 10, 11, 12, ...
-  # which will all fit on a single GPU
-  rapids_test_gpu_requirements(concurrent_test_${v} GPUS 1 PERCENT 1${v})
+  # this way all our tests can reside on the same gpu
+  rapids_test_add(NAME concurrent_test_${v} COMMAND verify_multi_concurrent ${v} GPUS 1 PERCENT 1${v})
 endforeach()
 

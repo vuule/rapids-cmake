@@ -25,12 +25,12 @@ if(DEFINED ENV{CTEST_RESOURCE_GROUP_COUNT})
       #items
       string(REPLACE "id:" "" allocation "${allocation}")
       string(REPLACE ",slots:" ";" allocation "${allocation}")
-      list(GET allocation 0 device_id)
+      list(GET allocation 0 device_ids)
       list(GET allocation 1 percent)
-      set(ENV{CUDA_VISIBLE_DEVICES} ${device_id})
+      set(ENV{CUDA_VISIBLE_DEVICES} ${device_ids})
     endif()
   endforeach()
 endif()
 execute_process(
-  COMMAND ${command_to_run}
+  COMMAND ${command_to_run} ${command_args}
   COMMAND_ECHO STDOUT)

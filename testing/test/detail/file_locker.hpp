@@ -7,24 +7,30 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include "rapids_cmake_ctest_allocation.hpp"
-
 #define DefineToString(a) define_to_str(a)
 #define define_to_str(a) #a
 
-std::string lock_file_name(int slots) {
+std::string lock_file_name(int tid) {
   const static std::string dir = DefineToString(BINARY_DIR);
-  return std::string(dir + "/lock." + std::to_string(slots));
+  return std::string(dir + "/lock." + std::to_string(tid));
 }
+
 
 struct ctest_lock {
   std::string file_name;
   int fd;
 
-  ctest_lock(rapids_cmake::GPUAllocation const &alloc)
-      : file_name(lock_file_name(alloc.slots)),
-        fd(open(file_name.c_str(), O_RDWR | O_CREAT, S_IRGRP | S_IRWXU)) {
-    auto deviceIdAsStr = std::to_string(alloc.device_id);
+  ctest_lock(int test_id) {
+
+    this->file_name = lock_file_name(test_id);
+    this->fd = open(file_name.c_str(), O_RDWR | O_CREAT, S_IRGRP | S_IRWXU);
+
+    int activeDevice = 0;
+    cudaGetDevice(&activeDevice);
+    cudaDeviceProp prop;
+    cudaGetDeviceProperties(&prop, activeDevice);
+
+    auto deviceIdAsStr = std::to_string(p.pciBusID);
     write(fd, deviceIdAsStr.c_str(), deviceIdAsStr.size());
     lockf(fd, F_TLOCK, 0);
   }
