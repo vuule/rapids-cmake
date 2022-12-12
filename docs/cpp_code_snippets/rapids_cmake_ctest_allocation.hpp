@@ -17,6 +17,7 @@
 #pragma once
 
 #include <vector>
+#include <cuda_runtime_api.h>
 
 namespace rapids_cmake {
 
@@ -74,13 +75,14 @@ std::vector<GPUAllocation> full_allocation();
  *
  * Note: Return value is the cudaError_t of `cudaSetDevice`
  */
-int bind_to_gpu(GPUAllocation const& alloc);
+cudaError_t bind_to_gpu(GPUAllocation const& alloc);
 
 /*
  * Convenience method to bind to the first GPU that CTest has allocated
  * Provided as most RAPIDS tests only require a single GPU
  *
- * Note: Return value is the cudaError_t of `cudaSetDevice`
+ * Will return `false` if no GPUs have been allocated, or if setting
+ * the CUDA device failed for any reason.
  */
 bool bind_to_first_gpu();
 

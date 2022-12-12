@@ -82,7 +82,7 @@ bool using_resources()
 
 std::vector<GPUAllocation> full_allocation() { return determineGPUAllocations(); }
 
-int bind_to_gpu(GPUAllocation const& alloc) { return cudaSetDevice(alloc.device_id); }
+cudaError_t bind_to_gpu(GPUAllocation const& alloc) { return cudaSetDevice(alloc.device_id); }
 
 bool bind_to_first_gpu()
 {
