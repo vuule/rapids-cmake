@@ -20,7 +20,7 @@
 
 int main() {
 
-  // Very we only have a single GPU visible to us
+  // Verify we only have a single GPU visible to us
   int nDevices = 0;
   cudaGetDeviceCount(&nDevices);
 
