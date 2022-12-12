@@ -18,11 +18,9 @@ cmake_minimum_required(VERSION 3.23.1)
 if(DEFINED ENV{CTEST_RESOURCE_GROUP_COUNT})
   foreach(index RANGE 0 ${CTEST_RESOURCE_GROUP_COUNT})
     set(allocation $ENV{CTEST_RESOURCE_GROUP_${index}_GPUS})
-    if (DEFINED allocation)
-      #strings look like "id:value,slots:value"
-      #so lets make a super lazy parser by transforming
-      #`id:` and `,slots:` into `;` so we have a list with two
-      #items
+    if(DEFINED allocation)
+      # strings look like "id:value,slots:value" so lets make a super lazy parser by transforming
+      # `id:` and `,slots:` into `;` so we have a list with two items
       string(REPLACE "id:" "" allocation "${allocation}")
       string(REPLACE ",slots:" ";" allocation "${allocation}")
       list(GET allocation 0 device_ids)
@@ -31,6 +29,4 @@ if(DEFINED ENV{CTEST_RESOURCE_GROUP_COUNT})
     endif()
   endforeach()
 endif()
-execute_process(
-  COMMAND ${command_to_run} ${command_args}
-  COMMAND_ECHO STDOUT)
+execute_process(COMMAND ${command_to_run} ${command_args} COMMAND_ECHO STDOUT)

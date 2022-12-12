@@ -48,7 +48,7 @@ same GPU and quickly exhaust all memory.
   used.
 
 #]=======================================================================]
-function(rapids_test_gpu_requirements test_name )
+function(rapids_test_gpu_requirements test_name)
   set(options)
   set(one_value GPUS PERCENT)
   set(multi_value)
@@ -59,7 +59,8 @@ function(rapids_test_gpu_requirements test_name )
     message(FATAL_ERROR "rapids_test_gpu_requirements requires the GPUS option to be provided.")
   endif()
   if(gpus LESS 1 OR (NOT gpus MATCHES "^[0-9]+$"))
-    message(FATAL_ERROR "rapids_test_gpu_requirements GPUS requires a numeric value ( >= 1) provided ${gpus}.")
+    message(FATAL_ERROR "rapids_test_gpu_requirements GPUS requires a numeric value ( >= 1) provided ${gpus}."
+    )
   endif()
 
   set(percent 100)

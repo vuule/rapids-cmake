@@ -51,7 +51,7 @@ Result Variables
   json file if not already set
 
 #]=======================================================================]
-function(rapids_test_init )
+function(rapids_test_init)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.test.init")
 
   include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/generate_resource_spec.cmake)

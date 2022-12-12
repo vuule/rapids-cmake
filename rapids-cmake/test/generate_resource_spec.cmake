@@ -49,7 +49,8 @@ function(rapids_test_generate_resource_spec DESTINATION filepath mode)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.test.generate_resource_spec")
 
   if(NOT mode STREQUAL "DETECT")
-    message(FATAL_ERROR "rapids_test_generate_resource_spec currently only supports the 'DETECT' mode")
+    message(FATAL_ERROR "rapids_test_generate_resource_spec currently only supports the 'DETECT' mode"
+    )
   endif()
 
   include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/detect_number_of_gpus.cmake)

@@ -81,18 +81,21 @@ function(rapids_test_add)
     set(_RAPIDS_TEST_WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}")
   endif()
 
-  # Provide a copy of the test runner in the binary directory so that tests still can
-  # be executed if for some reason rapids-cmake src has been removed.
+  # Provide a copy of the test runner in the binary directory so that tests still can be executed if
+  # for some reason rapids-cmake src has been removed.
   set(_rapids_run_gpu_test_script "${PROJECT_BINARY_DIR}/rapids-cmake/run_gpu_test.cmake")
   if(NOT EXISTS "${_rapids_run_gpu_test_script}")
-    file(COPY "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/run_gpu_test.cmake" DESTINATION "${PROJECT_BINARY_DIR}/rapids-cmake/")
+    file(COPY "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/run_gpu_test.cmake"
+         DESTINATION "${PROJECT_BINARY_DIR}/rapids-cmake/")
   endif()
 
   add_test(NAME ${_RAPIDS_TEST_NAME}
-           COMMAND ${CMAKE_COMMAND}  "-Dcommand_to_run=${command}" "-Dcommand_args=${args}" -P "${_rapids_run_gpu_test_script}"
+           COMMAND ${CMAKE_COMMAND} "-Dcommand_to_run=${command}" "-Dcommand_args=${args}" -P
+                   "${_rapids_run_gpu_test_script}"
            WORKING_DIRECTORY "${_RAPIDS_TEST_WORKING_DIRECTORY}")
 
   include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/gpu_requirements.cmake)
-  rapids_test_gpu_requirements(${_RAPIDS_TEST_NAME} GPUS ${_RAPIDS_TEST_GPUS} PERCENT ${_RAPIDS_TEST_PERCENT})
+  rapids_test_gpu_requirements(${_RAPIDS_TEST_NAME} GPUS ${_RAPIDS_TEST_GPUS} PERCENT
+                               ${_RAPIDS_TEST_PERCENT})
 
 endfunction()
