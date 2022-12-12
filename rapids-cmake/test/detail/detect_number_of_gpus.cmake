@@ -31,7 +31,6 @@ Builds a small test CUDA executable that reports the number of GPUs
 on the machine
 
 #]=======================================================================]
-
 function(rapids_test_detect_number_of_gpus result_variable)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.test.detect_number_of_gpus")
 

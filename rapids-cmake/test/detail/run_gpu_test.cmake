@@ -16,6 +16,7 @@
 cmake_minimum_required(VERSION 3.23.1)
 
 if(DEFINED ENV{CTEST_RESOURCE_GROUP_COUNT})
+  # cmake-lint: disable=E1120
   foreach(index RANGE 0 ${CTEST_RESOURCE_GROUP_COUNT})
     set(allocation $ENV{CTEST_RESOURCE_GROUP_${index}_GPUS})
     if(DEFINED allocation)

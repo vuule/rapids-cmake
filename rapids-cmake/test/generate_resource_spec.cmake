@@ -44,7 +44,6 @@ files to be generated.
     Unlike rapids_test_init this doesn't set CTEST_RESOURCE_SPEC_FILE
 
 #]=======================================================================]
-
 function(rapids_test_generate_resource_spec DESTINATION filepath mode)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.test.generate_resource_spec")
 
@@ -60,6 +59,7 @@ function(rapids_test_generate_resource_spec DESTINATION filepath mode)
   file(READ "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/resource_spec.json" gpu_json_template)
 
   if(gpu_count GREATER 0)
+    # cmake-lint: disable=E1120
     foreach(gpu_index RANGE ${gpu_count})
       if(gpu_index EQUAL gpu_count)
         # foreach in inclusive of the max
