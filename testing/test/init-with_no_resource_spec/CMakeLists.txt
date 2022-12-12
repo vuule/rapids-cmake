@@ -23,7 +23,6 @@ rapids_test_init()
 unset(CTEST_RESOURCE_SPEC_FILE)
 
 add_executable(verify_alloc_hook main.cpp)
-target_link_libraries(verify_alloc_hook PRIVATE RAPIDS::test)
 
 enable_testing()
 add_test(NAME simple_test COMMAND verify_alloc_hook)

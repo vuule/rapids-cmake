@@ -14,7 +14,7 @@
 # limitations under the License.
 #=============================================================================
 cmake_minimum_required(VERSION 3.20)
-project(rapids-test-project LANGUAGES CXX)
+project(rapids-test-project LANGUAGES CUDA)
 
 include(${rapids-cmake-dir}/rapids-test.cmake)
 
