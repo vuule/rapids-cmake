@@ -59,7 +59,7 @@ bool using_resources();
  * Note: The `device_id` of each allocation might not be unique.
  * If a test says they need 50% of two gpu's they could be allocated
  * the same physical GPU. If a test needs distinct / unique devices
- * they must request 51%+ of a device.
+ * it must request 51%+ of a device.
  *
  * Note: rapids_cmake does no caching, so this query should be cached
  * instead of called multiple times.
