@@ -136,7 +136,7 @@ correct export generation. These should only be used when :cmake:command:`rapids
 Testing
 *******
 
-The `rapids_test` functions simplify CTest components, including resource allocation.
+The `rapids_test` functions simplify CTest resource allocation, allowing for tests to run in parallel without over allocation GPU resources.
 More information on resource allocation can be found in the rapids-cmake :ref:`Hardware Resources and Testing documentation <rapids_resource_allocation>`.
 
 .. toctree::
