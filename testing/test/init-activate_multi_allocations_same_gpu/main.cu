@@ -12,6 +12,6 @@ int main() {
   if (nDevices == 0) {
     return 1;
   }
-  std::cout << "Seeing atleast a single GPU" << std::endl;
+  std::cout << "Seeing at least a single GPU" << std::endl;
   return 0;
 }
