@@ -21,12 +21,12 @@
 namespace rapids_cmake {
 
 /*
-* Represents a GPU Allocation provided by a CTest resource specification.
-*
-* The `device_id` maps to the CUDA gpu id required by `cudaSetDevice`.
-* The slots represent the percentage of the GPU that this test will use.
-* Primarily used by CTest to ensure proper load balancing of tests.
-*/
+ * Represents a GPU Allocation provided by a CTest resource specification.
+ *
+ * The `device_id` maps to the CUDA gpu id required by `cudaSetDevice`.
+ * The slots represent the percentage of the GPU that this test will use.
+ * Primarily used by CTest to ensure proper load balancing of tests.
+ */
 struct GPUAllocation {
   int device_id;
   int slots;
@@ -45,7 +45,7 @@ struct GPUAllocation {
  *     rapids_cmake::bind_to_first_gpu();
  *     }
  * ```
-*/
+ */
 bool using_resources();
 
 /*
@@ -63,7 +63,7 @@ bool using_resources();
  *
  * Note: rapids_cmake does no caching, so this query should be cached
  * instead of called multiple times.
-*/
+ */
 std::vector<GPUAllocation> full_allocation();
 
 /*
@@ -74,7 +74,7 @@ std::vector<GPUAllocation> full_allocation();
  *
  * Note: Return value is the cudaError_t of `cudaSetDevice`
  */
-int bind_to_gpu(GPUAllocation const &alloc);
+int bind_to_gpu(GPUAllocation const& alloc);
 
 /*
  * Convenience method to bind to the first GPU that CTest has allocated
@@ -84,4 +84,4 @@ int bind_to_gpu(GPUAllocation const &alloc);
  */
 bool bind_to_first_gpu();
 
-} // namespace rapids_cmake
+}  // namespace rapids_cmake

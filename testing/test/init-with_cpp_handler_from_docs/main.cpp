@@ -21,9 +21,18 @@
 #include "rapids_cmake_ctest_allocation.hpp"
 
 int main() {
-  if(!rapids_cmake::using_resources() ) {
-    std::cout << "failed to have a resource file" << std::endl;
-    return 0;
+
+  // Verify we only have a single GPU visible to us
+  auto allocs = rapids_cmake::full_allocation();
+
+  if(allocs.size() != 1) {
+    return 1;
   }
-  return 1;
+
+  auto alloc = allocs[0];
+  if(alloc.slots != 25) {
+    return 1;
+  }
+
+  return 0;
 }
