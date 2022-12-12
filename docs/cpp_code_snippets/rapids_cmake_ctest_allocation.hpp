@@ -57,7 +57,7 @@ bool using_resources();
  * devices they should bind to.
  *
  * Note: The `device_id` of each allocation might not be unique.
- * If a test says they need 50% of two gpu's they could be allocated
+ * If a test says it needs 50% of two GPUs, it could be allocated
  * the same physical GPU. If a test needs distinct / unique devices
  * it must request 51%+ of a device.
  *
