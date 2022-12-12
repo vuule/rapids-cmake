@@ -36,7 +36,7 @@ struct GPUAllocation {
  * Returns true when a CTest resource specification has been specified.
  *
  * Since the vast majority of tests should execute without a CTest resource
- * spec ( e.g. when executed manually be developer ), callers of `rapids_cmake`
+ * spec (e.g. when executed manually by a developer), callers of `rapids_cmake`
  * should first ensure that a CTestresource spec file has been provided before
  * trying to query/bind to the allocation.
  *
