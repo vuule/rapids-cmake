@@ -20,10 +20,10 @@ include(${rapids-cmake-dir}/rapids-test.cmake)
 
 rapids_test_init()
 
-add_executable(verify_alloc_hook main.cu)
+add_executable(verify_alloc main.cu)
 
 enable_testing()
-rapids_test_add(NAME simple_test COMMAND verify_alloc_hook GPUS 10 SLOTS 1)
+rapids_test_add(NAME simple_test COMMAND verify_alloc GPUS 10 PERCENT 1)
 
 # Validate that the test runs correctly
 set_tests_properties(simple_test

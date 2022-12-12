@@ -20,8 +20,11 @@ include(${rapids-cmake-dir}/rapids-test.cmake)
 
 rapids_test_init()
 
+find_package(CUDAToolkit REQUIRED)
+
 add_executable(verify_multi_concurrent main.cpp)
-target_link_libraries(verify_multi_concurrent PRIVATE CUDA::toolkit)
+target_link_libraries(verify_multi_concurrent PRIVATE CUDA::cudart)
+target_include_directories(verify_multi_concurrent PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
 target_compile_definitions(verify_multi_concurrent PRIVATE "BINARY_DIR=${CMAKE_BINARY_DIR}")
 
 enable_testing()

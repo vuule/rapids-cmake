@@ -7,6 +7,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include <cuda_runtime_api.h>
+
 #define DefineToString(a) define_to_str(a)
 #define define_to_str(a) #a
 
@@ -30,7 +32,7 @@ struct ctest_lock {
     cudaDeviceProp prop;
     cudaGetDeviceProperties(&prop, activeDevice);
 
-    auto deviceIdAsStr = std::to_string(p.pciBusID);
+    auto deviceIdAsStr = std::to_string(prop.pciBusID);
     write(fd, deviceIdAsStr.c_str(), deviceIdAsStr.size());
     lockf(fd, F_TLOCK, 0);
   }

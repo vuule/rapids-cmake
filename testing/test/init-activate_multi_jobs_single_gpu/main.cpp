@@ -7,7 +7,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include "detail/file_locker.hpp"
+#include "../detail/file_locker.hpp"
 
 int main(int argc, char** argv) {
   const constexpr int min_lock_id = 0;
@@ -15,11 +15,11 @@ int main(int argc, char** argv) {
 
 
   // Lock our sentinel file
-  auto my_id = std::...(argv[1]);
-  auto lock = ctest_lock(argv[1]);
+  auto my_id = std::stoi(argv[1]);
+  auto lock = ctest_lock(my_id);
 
   // verify all sentinel files are locked
-  auto checker = [alloc](int lock_state, int i) {
+  auto checker = [my_id](int lock_state, int i) {
     bool valid_lock_state = false;
     if (i == my_id) {
       // we have this file locked

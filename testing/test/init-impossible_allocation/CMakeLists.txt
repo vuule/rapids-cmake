@@ -20,7 +20,7 @@ include(${rapids-cmake-dir}/rapids-test.cmake)
 
 rapids_test_init()
 
-add_executable(verify_alloc_hook main.cpp)
+add_executable(verify_alloc main.cpp)
 
 enable_testing()
-rapids_test_add(NAME simple_test COMMAND verify_alloc_hook simple_test GPUS 25)
+rapids_test_add(NAME simple_test COMMAND verify_alloc simple_test GPUS 25)
