@@ -281,8 +281,38 @@
           "TARGET": "1",
           "ROOT_DIRECTORY": "1"
         }
+      },
+      "rapids_test_init": {
+        "pargs": {
+          "nargs": "0"
+        }
+      },
+      "rapids_test_add": {
+        "pargs": {
+          "nargs": "0"
+        },
+        "kwargs": {
+          "NAME": "1",
+          "COMMAND": "*",
+          "GPUS": "1",
+          "PERCENT": "1",
+          "WORKING_DIRECTORY": "1"
+        }
+      },
+      "rapids_test_gpu_requirements": {
+        "pargs": {
+          "nargs": "0"
+        },
+        "kwargs": {
+          "GPUS": "1",
+          "PERCENT": "1"
+        }
+      },
+      "rapids_test_generate_resource_spec": {
+        "pargs": {
+          "nargs": "3"
+        }
       }
-
     }
   }
 }

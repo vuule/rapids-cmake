@@ -95,7 +95,7 @@ function(rapids_test_add)
            WORKING_DIRECTORY "${_RAPIDS_TEST_WORKING_DIRECTORY}")
 
   include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/gpu_requirements.cmake)
-  rapids_test_gpu_requirements(${_RAPIDS_TEST_NAME} GPUS ${_RAPIDS_TEST_GPUS} PERCENT
-                               ${_RAPIDS_TEST_PERCENT})
+  rapids_test_gpu_requirements(${_RAPIDS_TEST_NAME} GPUS ${_RAPIDS_TEST_GPUS}
+                               PERCENT ${_RAPIDS_TEST_PERCENT})
 
 endfunction()
