@@ -27,5 +27,5 @@ rapids_test_add(NAME simple_test COMMAND verify_alloc GPUS 10 PERCENT 1)
 
 # Validate that the test runs correctly
 set_tests_properties(simple_test
-  PROPERTIES PASS_REGULAR_EXPRESSION "Seeing atleast a single GPU"
+  PROPERTIES PASS_REGULAR_EXPRESSION "Seeing at least a single GPU"
   )
