@@ -21,7 +21,7 @@ rapids_test_add
 
 .. versionadded:: v23.02.00
 
-States how many GPUs and what precent of each a test requires
+States how many GPUs and what percent of each a test requires.
 
   .. code-block:: cmake
 
@@ -45,7 +45,7 @@ same GPU and quickly exhaust all memory.
 
 ``GPUS``
   State how many GPUs this test requires. Allows CTest to not over-subscribe
-  a machines hardware.
+  a machine's hardware.
 
 ``PERCENT``
   By default if no percent is provided, 100 is used.

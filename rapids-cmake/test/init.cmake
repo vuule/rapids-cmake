@@ -21,16 +21,16 @@ rapids_test_init
 
 .. versionadded:: v23.02.00
 
-Establish necessary components for CTest gpu resource allocation to allow
-for parallel tests
+Establish necessary components for CTest GPU resource allocation to allow
+for parallel tests.
 
   .. code-block:: cmake
 
     rapids_test_init(  )
 
-Generates a json resource specification file representing the machines GPUs
+Generates a JSON resource specification file representing the machine's GPUs
 using system introspection. This will allow CTest to schedule multiple
-single-gpu or multi-gpu tests in parallel on multi-gpu machines.
+single-GPU or multi-GPU tests in parallel on multi-GPU machines.
 
 For tests to execute correctly they will need to use the
 :cmake:command:`rapids_test_add` to register GPU requirements:
@@ -48,7 +48,7 @@ For tests to execute correctly they will need to use the
 Result Variables
 ^^^^^^^^^^^^^^^^
   :cmake:variable:`CTEST_RESOURCE_SPEC_FILE` will be set to the generated
-  json file if not already set
+  JSON file if not already set
 
 #]=======================================================================]
 function(rapids_test_init)

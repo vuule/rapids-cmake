@@ -21,16 +21,16 @@ rapids_test_generate_resource_spec
 
 .. versionadded:: v23.02.00
 
-Generates a json resource specification file representing the machines GPUs
+Generates a JSON resource specification file representing the machine's GPUs
 using system introspection.
 
   .. code-block:: cmake
 
     rapids_test_generate_resource_spec( DESTINATION filepath DETECT)
 
-Generates a json resource specification file representing the machines GPUs
+Generates a JSON resource specification file representing the machine's GPUs
 using system introspection. This will allow CTest to schedule multiple
-single-gpu tests in parallel on multi-gpu machines.
+single-GPU tests in parallel on multi-GPU machines.
 
 For the majority of projects :cmake:command:`rapids_test_init` should be used.
 This command should be used directly projects that require multiple spec

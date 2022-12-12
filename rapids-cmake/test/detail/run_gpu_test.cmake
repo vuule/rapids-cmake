@@ -20,7 +20,7 @@ if(DEFINED ENV{CTEST_RESOURCE_GROUP_COUNT})
   foreach(index RANGE 0 ${CTEST_RESOURCE_GROUP_COUNT})
     set(allocation $ENV{CTEST_RESOURCE_GROUP_${index}_GPUS})
     if(DEFINED allocation)
-      # strings look like "id:value,slots:value" so lets make a super lazy parser by transforming
+      # strings look like "id:value,slots:value" so let's make a super lazy parser by transforming
       # `id:` and `,slots:` into `;` so we have a list with two items
       string(REPLACE "id:" "" allocation "${allocation}")
       string(REPLACE ",slots:" ";" allocation "${allocation}")

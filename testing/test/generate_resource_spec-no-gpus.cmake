@@ -32,6 +32,6 @@ if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/spec.json")
 endif()
 
 file(READ "${CMAKE_CURRENT_BINARY_DIR}/spec.json" content)
-if( content MATCHES 100)
+if(content MATCHES 100)
   message(FATAL_ERROR "rapids_test_generate_resource_spec incorrectly detected a GPU")
 endif()

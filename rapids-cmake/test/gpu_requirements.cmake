@@ -21,7 +21,7 @@ rapids_test_gpu_requirements
 
 .. versionadded:: v23.02.00
 
-States how many GPUs and what precent of each a test requires
+States how many GPUs and what percent of each a test requires.
 
   .. code-block:: cmake
 
@@ -40,10 +40,10 @@ same GPU and quickly exhaust all memory.
 
 ``GPUS``
   State how many GPUs this test requires. Allows CTest to not over-subscribe
-  a machines hardware.
+  a machine's hardware.
 
 ``PERCENT``
-  State how much of each GPU this test requires. In general 100,50, and 20
+  State how much of each GPU this test requires. In general 100, 50, and 20
   are commonly used values. By default if no percent is provided, 100 is
   used.
 
@@ -59,7 +59,7 @@ function(rapids_test_gpu_requirements test_name)
     message(FATAL_ERROR "rapids_test_gpu_requirements requires the GPUS option to be provided.")
   endif()
   if(gpus LESS 1 OR (NOT gpus MATCHES "^[0-9]+$"))
-    message(FATAL_ERROR "rapids_test_gpu_requirements GPUS requires a numeric value ( >= 1) provided ${gpus}."
+    message(FATAL_ERROR "rapids_test_gpu_requirements GPUS requires a numeric value (>= 1) provided ${gpus}."
     )
   endif()
 

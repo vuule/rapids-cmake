@@ -21,7 +21,7 @@ To get CTest resource allocation used by tests the following components are need
 
 
 These are steep requirements that require large amounts of infrastructure setup for each project.
-In addition the CTest resource allocation specification is very relaxed, allowing it to represent abitrary requirements such as CPUs, GPUs, and ASICs.
+In addition the CTest resource allocation specification is very relaxed, allowing it to represent arbitrary requirements such as CPUs, GPUs, and ASICs.
 
 rapids_test
 ***********
@@ -32,8 +32,8 @@ These commands simplify GPU detection, setting up resource specification files, 
 Machine GPU Detection
 *********************
 
-The key component of CTest resource allocation is having an accurate representation of the hardware that exists on the developers machine.
-The :cmake:command:`rapids_test_init` function will do system introspection to determine the number of GPUs on the current machine and generate a resource allocation json file representation these GPUs.
+The key component of CTest resource allocation is having an accurate representation of the hardware that exists on the developer's machine.
+The :cmake:command:`rapids_test_init` function will do system introspection to determine the number of GPUs on the current machine and generate a resource allocation JSON file representing these GPUs.
 
 .. code-block:: cmake
 
@@ -44,14 +44,14 @@ The :cmake:command:`rapids_test_init` function will do system introspection to d
   enable_testing()
   rapids_test_init()
 
-The CTest resource allocation specification isn't limited to representing GPUs a single unit.
-Instead it allows the json file to specify the capacity ( slots ) that each GPU has.
-In the case of rapids-cmake we always represent each GPU as having 100 slots allowing projects to think in total percentage when calculating requirements.
+The CTest resource allocation specification isn't limited to representing GPUs as a single unit.
+Instead it allows the JSON file to specify the capacity (slots) that each GPU has.
+In the case of rapids-cmake we always represent each GPU as having 100 slots allowing projects to think in total percentages when calculating requirements.
 
 
 Specifying Tests GPU Requirements
 *********************************
-As talked about above each CMake test needs to specify the GPU resources they require to allow CTest to properly partition GPUs given the CTest parallel level.
+As discussed above, each CMake test needs to specify the GPU resources they require to allow CTest to properly partition GPUs given the CTest parallel level.
 The easiest path for for developers is to use the :cmake:command:`rapids_test_add` which wraps each execution in a wrapper script that sets the CUDA visible devices, making tests only see the allocated device(s).
 
 For example below we have three tests, two which can run concurrently on the same GPU and one that requires a full GPU.
@@ -67,7 +67,7 @@ This specification will allow all three tests to run concurently when a machine 
   add_executable( cuda_test test.cu )
   rapids_test_add(NAME test_small_alloc COMMAND cuda_test 50 GPUS 1 PERCENT 10)
   rapids_test_add(NAME test_medium_alloc COMMAND cuda_test 100 GPUS 1 PERCENT 20)
-  rapids_test_add(NAME test_medium_very_larg_alloc COMMAND cuda_test 10000 GPUS 1)
+  rapids_test_add(NAME test_very_large_alloc COMMAND cuda_test 10000 GPUS 1)
 
 
 Multi GPU Tests
@@ -93,7 +93,7 @@ When rapids-cmake test wrapper is insufficient
 
 At times the approach of using wrapper scripts is insufficient, usually due to using existing test wrappers.
 
-As talked about above each CMake test still needs to specify the GPU resources they require to allow CTest to properly partition GPUs given the CTest parallel level.
+As discussed above, each CMake test still needs to specify the GPU resources they require to allow CTest to properly partition GPUs given the CTest parallel level.
 But in those cases the tests themselves will need to parse the CTest enviornment variables to extract what GPUs they should run on.
 
 For the CMake side you can use :cmake:command:`rapids_test_gpu_requirements` to specify the requirements
@@ -111,7 +111,7 @@ For the CMake side you can use :cmake:command:`rapids_test_gpu_requirements` to 
   add_test(NAME test_small_alloc COMMAND cuda_test 50)
   rapids_test_gpu_requirements(test_small_alloc GPUS 1 PERCENT 10)
 
-Now on the C++ you need to parse the relevant `CTEST_RESOURCE_GROUP` enviornment variables.
+Now in the C++ you need to parse the relevant `CTEST_RESOURCE_GROUP` environment variables.
 To simplify the process, here is some helper C++ code that will do the heavy lifting for you:
 
 .. literalinclude:: cpp_code_snippets/rapids_cmake_ctest_allocation.hpp

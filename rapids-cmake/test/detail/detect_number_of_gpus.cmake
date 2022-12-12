@@ -21,14 +21,14 @@ rapids_test_detect_number_of_gpus
 
 .. versionadded:: v23.02.00
 
-Detect the number of GPUs on the local machine
+Detect the number of GPUs on the local machine.
 
   .. code-block:: cmake
 
     rapids_test_detect_number_of_gpus( result_variable )
 
 Builds a small test CUDA executable that reports the number of GPUs
-on the machine
+on the machine.
 
 #]=======================================================================]
 function(rapids_test_detect_number_of_gpus result_variable)

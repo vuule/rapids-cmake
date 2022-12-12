@@ -77,7 +77,7 @@ std::vector<GPUAllocation> full_allocation();
 int bind_to_gpu(GPUAllocation const &alloc);
 
 /*
- * Convience method to bind to the first GPU that CTest has allocated
+ * Convenience method to bind to the first GPU that CTest has allocated
  * Provided as most RAPIDS tests only require a single GPU
  *
  * Note: Return value is the cudaError_t of `cudaSetDevice`
