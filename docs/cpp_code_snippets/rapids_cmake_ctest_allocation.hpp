@@ -51,7 +51,7 @@ bool using_resources();
 /*
  * Returns all GPUAllocations allocated for a test
  *
- * To support multi-gpu tests the CTest resource specification allows a
+ * To support multi-GPU tests the CTest resource specification allows a
  * test to request multiple GPUs. As CUDA only allows binding to a
  * single GPU at any time, this API allows tests to know what CUDA
  * devices they should bind to.
