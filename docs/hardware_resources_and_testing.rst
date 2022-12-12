@@ -13,7 +13,7 @@ Combined together this ensures that tests are told which specific resources they
 
 To get CTest resource allocation used by tests the following components are needed.
 
-  - A json per-machine resource specification file
+  - A JSON per-machine resource specification file
   - The :cmake:variable:`CTEST_RESOURCE_SPEC_FILE` points to the json file
   - Each :cmake:command:`add_test` records what resources it requires via test properties
   - Each test reads the relevant environment variables to determine
