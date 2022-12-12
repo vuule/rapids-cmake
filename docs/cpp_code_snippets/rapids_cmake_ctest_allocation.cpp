@@ -53,7 +53,7 @@ std::vector<GPUAllocation> determineGPUAllocations()
   std::vector<GPUAllocation> allocations;
   const auto* resource_count = std::getenv("CTEST_RESOURCE_GROUP_COUNT");
   if (!resource_count) {
-    allocations.push_back(std::move(noGPUAllocation()));
+    allocations.emplace_back();
     return allocations;
   }
 
@@ -66,7 +66,7 @@ std::vector<GPUAllocation> determineGPUAllocations()
     if (resource_group == "GPUS") {
       auto resource_env = group_env + "_" + resource_group;
       auto&& allocation = parseCTestAllocation(resource_env);
-      allocations.push_back(std::move(allocation));
+      allocations.emplace_back(allocation);
     }
   }
 
