@@ -112,7 +112,7 @@ For the CMake side you can use :cmake:command:`rapids_test_gpu_requirements` to 
   rapids_test_gpu_requirements(test_small_alloc GPUS 1 PERCENT 10)
 
 Now on the C++ you need to parse the relevant `CTEST_RESOURCE_GROUP` enviornment variables.
-To simplify the process, here is some helper c++ code that will do the heavy lifting for you
+To simplify the process, here is some helper C++ code that will do the heavy lifting for you:
 
 .. literalinclude:: cpp_code_snippets/rapids_cmake_ctest_allocation.hpp
   :language: cpp
