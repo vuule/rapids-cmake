@@ -47,10 +47,12 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.test.generate_resource_spec")
 
   if(NOT DEFINED CMAKE_CUDA_COMPILER AND NOT DEFINED CMAKE_CXX_COMPILER)
-    message(FATAL_ERROR "rapids_test_generate_resource_spec Requires a C++ or CUDA compiler to be enabled.")
+    message(FATAL_ERROR "rapids_test_generate_resource_spec Requires a C++ or CUDA compiler to be enabled."
+    )
   endif()
 
-  set(gpu_json_contents [=[
+  set(gpu_json_contents
+      [=[
 {
 "version":{"major":1, "minor": 0},
 "local": [ {
@@ -60,7 +62,7 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
 ]=])
 
   set(eval_file ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/generate_resource_spec.cpp)
-  set(eval_exe  ${PROJECT_BINARY_DIR}/rapids-cmake/generate_ctest_json)
+  set(eval_exe ${PROJECT_BINARY_DIR}/rapids-cmake/generate_ctest_json)
   set(error_file ${PROJECT_BINARY_DIR}/rapids-cmake/detect_gpus.stderr.log)
 
   find_package(CUDAToolkit REQUIRED)
@@ -72,14 +74,18 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
 
   if(NOT EXISTS "${eval_exe}")
     file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/rapids-cmake/")
-    execute_process(COMMAND "${compiler}" "${eval_file}" -o "${eval_exe}" -I${CUDAToolkit_INCLUDE_DIRS} -L${CUDAToolkit_LIBRARY_DIR} -lcudart
-      OUTPUT_VARIABLE compile_output ERROR_VARIABLE compile_output COMMAND_ECHO STDOUT)
+    execute_process(COMMAND "${compiler}" "${eval_file}" -o "${eval_exe}"
+                            -I${CUDAToolkit_INCLUDE_DIRS} -L${CUDAToolkit_LIBRARY_DIR} -lcudart
+                    OUTPUT_VARIABLE compile_output
+                    ERROR_VARIABLE compile_output COMMAND_ECHO STDOUT)
   endif()
 
   if(NOT EXISTS "${eval_exe}")
-    message(STATUS "rapids_test_generate_resource_spec failed to build detection executable, presuming 1 GPU.")
-    message(STATUS "rapids_test_generate_resource_spec compile failure details are ${compile_output}")
-    file(WRITE "${filepath}"  "${gpu_json_contents}")
+    message(STATUS "rapids_test_generate_resource_spec failed to build detection executable, presuming 1 GPU."
+    )
+    message(STATUS "rapids_test_generate_resource_spec compile failure details are ${compile_output}"
+    )
+    file(WRITE "${filepath}" "${gpu_json_contents}")
   else()
     execute_process(COMMAND ${eval_exe} OUTPUT_FILE "${filepath}")
   endif()
