@@ -310,7 +310,7 @@
       },
       "rapids_test_generate_resource_spec": {
         "pargs": {
-          "nargs": "3"
+          "nargs": "2"
         }
       }
     }

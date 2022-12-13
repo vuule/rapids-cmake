@@ -55,7 +55,7 @@ function(rapids_test_init)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.test.init")
 
   include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/generate_resource_spec.cmake)
-  rapids_test_generate_resource_spec(DESTINATION "${PROJECT_BINARY_DIR}/resource_spec.json" DETECT)
+  rapids_test_generate_resource_spec(DESTINATION "${PROJECT_BINARY_DIR}/resource_spec.json")
 
   if(NOT CTEST_RESOURCE_SPEC_FILE)
     set(CTEST_RESOURCE_SPEC_FILE "${PROJECT_BINARY_DIR}/resource_spec.json" PARENT_SCOPE)

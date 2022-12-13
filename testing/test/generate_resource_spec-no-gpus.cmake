@@ -21,17 +21,17 @@ enable_language(CUDA)
 set(ENV{CUDA_VISIBLE_DEVICES} -1)
 
 set(CTEST_RESOURCE_SPEC_FILE "sentinel file")
-rapids_test_generate_resource_spec(DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/spec.json DETECT)
+rapids_test_generate_resource_spec(DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/spec.json )
 
 if(NOT CTEST_RESOURCE_SPEC_FILE STREQUAL "sentinel file")
   message(FATAL_ERROR "CTEST_RESOURCE_SPEC_FILE shouldn't be modified by calling rapids_test_generate_resource_spec")
 endif()
 
 if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/spec.json")
-  message(FATAL_ERROR "rapids_test_generate_resource_spec failed to write out the requested spec file")
+  message(FATAL_ERROR "rapids_test_ll generate_resource_spec failed to write out the requested spec file")
 endif()
 
 file(READ "${CMAKE_CURRENT_BINARY_DIR}/spec.json" content)
-if(content MATCHES 100)
+if(NOT content MATCHES [=[.*{"id":"0", "slots": 0}.*]=])
   message(FATAL_ERROR "rapids_test_generate_resource_spec incorrectly detected a GPU")
 endif()

@@ -25,7 +25,7 @@ States how many GPUs and what percent of each a test requires.
 
   .. code-block:: cmake
 
-    rapids_test_generate_resource_spec( test_name GPUS <N> [PERCENT <value>])
+    rapids_test_gpu_requirements( test_name GPUS <N> [PERCENT <value>])
 
 This function should only be used when :cmake:command:`rapids_test_add` is
 insufficient due to the rapids-cmake test wrappers not working for your

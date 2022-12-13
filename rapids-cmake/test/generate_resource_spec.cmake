@@ -26,7 +26,7 @@ using system introspection.
 
   .. code-block:: cmake
 
-    rapids_test_generate_resource_spec( DESTINATION filepath DETECT)
+    rapids_test_generate_resource_spec( DESTINATION filepath )
 
 Generates a JSON resource specification file representing the machine's GPUs
 using system introspection. This will allow CTest to schedule multiple
@@ -37,39 +37,51 @@ This command should be used directly projects that require multiple spec
 files to be generated.
 
 ``DESTINATION``
-
-``DETECT``
+  Location that the JSON output from the detection should be written to
 
 .. note::
     Unlike rapids_test_init this doesn't set CTEST_RESOURCE_SPEC_FILE
 
 #]=======================================================================]
-function(rapids_test_generate_resource_spec DESTINATION filepath mode)
+function(rapids_test_generate_resource_spec DESTINATION filepath)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.test.generate_resource_spec")
 
-  if(NOT mode STREQUAL "DETECT")
-    message(FATAL_ERROR "rapids_test_generate_resource_spec currently only supports the 'DETECT' mode"
-    )
+  if(NOT DEFINED CMAKE_CUDA_COMPILER AND NOT DEFINED CMAKE_CXX_COMPILER)
+    message(FATAL_ERROR "rapids_test_generate_resource_spec Requires a C++ or CUDA compiler to be enabled.")
   endif()
 
-  include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/detect_number_of_gpus.cmake)
+  set(gpu_json_contents [=[
+{
+"version":{"major":1, "minor": 0},
+"local": [ {
+  "gpus": [ {"id":"0", "slots": 100} ]
+} ]
+}
+]=])
 
-  rapids_test_detect_number_of_gpus(gpu_count)
+  set(eval_file ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/generate_resource_spec.cpp)
+  set(eval_exe  ${PROJECT_BINARY_DIR}/rapids-cmake/generate_ctest_json)
+  set(error_file ${PROJECT_BINARY_DIR}/rapids-cmake/detect_gpus.stderr.log)
 
-  file(READ "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/resource_spec.json" gpu_json_template)
-
-  if(gpu_count GREATER 0)
-    # cmake-lint: disable=E1120
-    foreach(gpu_index RANGE ${gpu_count})
-      if(gpu_index EQUAL gpu_count)
-        # foreach in inclusive of the max
-        break()
-      endif()
-      # Enable this GPU id by giving it 100 slots
-      string(JSON gpu_json_template SET "${gpu_json_template}" local 0 gpus ${gpu_index} slots 100)
-    endforeach()
+  find_package(CUDAToolkit REQUIRED)
+  if(DEFINED CMAKE_CUDA_COMPILER)
+    set(compiler ${CMAKE_CUDA_COMPILER})
+  else()
+    set(compiler ${CMAKE_CXX_COMPILER})
   endif()
 
-  file(WRITE "${filepath}" "${gpu_json_template}")
+  if(NOT EXISTS "${eval_exe}")
+    file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/rapids-cmake/")
+    execute_process(COMMAND "${compiler}" "${eval_file}" -o "${eval_exe}" -I${CUDAToolkit_INCLUDE_DIRS} -L${CUDAToolkit_LIBRARY_DIR} -lcudart
+      OUTPUT_VARIABLE compile_output ERROR_VARIABLE compile_output COMMAND_ECHO STDOUT)
+  endif()
+
+  if(NOT EXISTS "${eval_exe}")
+    message(STATUS "rapids_test_generate_resource_spec failed to build detection executable, presuming 1 GPU.")
+    message(STATUS "rapids_test_generate_resource_spec compile failure details are ${compile_output}")
+    file(WRITE "${filepath}"  "${gpu_json_contents}")
+  else()
+    execute_process(COMMAND ${eval_exe} OUTPUT_FILE "${filepath}")
+  endif()
 
 endfunction()
