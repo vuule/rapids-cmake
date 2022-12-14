@@ -26,6 +26,9 @@ add_subdirectory(cmake)
 add_subdirectory(cuda)
 add_subdirectory(export)
 add_subdirectory(find)
+
+include("${CMAKE_CURRENT_SOURCE_DIR}/utils/determine_gpu_count.cmake")
+determine_gpu_count()
 add_subdirectory(test)
 
 option(RAPIDS_CMAKE_ENABLE_DOWNLOAD_TESTS "Enable tests that require downloads" ON)
