@@ -15,7 +15,6 @@
 #=============================================================================
 add_cmake_config_test( rapids-test.cmake )
 
-add_cmake_config_test(generate_resource_spec-invalid-mode.cmake SHOULD_FAIL "rapids_test_generate_resource_spec currently only supports the 'DETECT'")
 add_cmake_config_test(generate_resource_spec-no-gpus.cmake)
 add_cmake_config_test(generate_resource_spec-simple.cmake)
 
