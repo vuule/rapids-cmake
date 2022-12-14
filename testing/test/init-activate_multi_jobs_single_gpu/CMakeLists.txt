@@ -14,7 +14,7 @@
 # limitations under the License.
 #=============================================================================
 cmake_minimum_required(VERSION 3.20)
-project(rapids-test-project LANGUAGES CXX)
+project(rapids-test-project LANGUAGES CUDA)
 
 include(${rapids-cmake-dir}/rapids-test.cmake)
 
@@ -22,7 +22,7 @@ rapids_test_init()
 
 find_package(CUDAToolkit REQUIRED)
 
-add_executable(verify_multi_concurrent main.cpp)
+add_executable(verify_multi_concurrent main.cu)
 target_link_libraries(verify_multi_concurrent PRIVATE CUDA::cudart)
 target_include_directories(verify_multi_concurrent PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
 target_compile_definitions(verify_multi_concurrent PRIVATE "BINARY_DIR=${CMAKE_BINARY_DIR}")
