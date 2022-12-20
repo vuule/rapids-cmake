@@ -13,9 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-include_guard(GLOBAL)
+include(${rapids-cmake-dir}/test/init.cmake)
+include(${rapids-cmake-dir}/test/add.cmake)
 
-include(${CMAKE_CURRENT_LIST_DIR}/test/init.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/test/add.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/test/gpu_requirements.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/test/install_relocatable.cmake)
+enable_language(CUDA)
+
+rapids_test_init()
+
+file(WRITE "${CMAKE_BINARY_DIR}/main.cu" "int main(){return 0;}")
+add_executable(verify_alloc  "${CMAKE_BINARY_DIR}/main.cu")
+
+enable_testing()
+rapids_test_add(NAME simple_test COMMAND verify_alloc INSTALL_COMPONENT_SET testing)
+

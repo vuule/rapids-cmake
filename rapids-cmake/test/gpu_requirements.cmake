@@ -49,6 +49,8 @@ same GPU and quickly exhaust all memory.
 
 #]=======================================================================]
 function(rapids_test_gpu_requirements test_name)
+  list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.test.gpu_requirements")
+
   set(options)
   set(one_value GPUS PERCENT)
   set(multi_value)

@@ -38,6 +38,8 @@ add_cmake_config_test(init-existing-specfile.cmake)
 add_cmake_config_test(init-simple.cmake)
 
 add_cmake_ctest_test(add-impossible-allocation SHOULD_FAIL "Insufficient resources for test")
+add_cmake_config_test(add-with-install-component.cmake)
+add_cmake_config_test(add-with-no-gpus.cmake SHOULD_FAIL "${gpu_missing_message}")
 if(RAPIDS_CMAKE_TESTING_GPU_COUNT GREATER 0)
   add_cmake_ctest_test(add-allocation-simple)
   add_cmake_ctest_test(add-multi-allocations-same-gpu)
