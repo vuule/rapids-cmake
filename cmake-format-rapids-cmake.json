@@ -294,6 +294,7 @@
         "kwargs": {
           "NAME": "1",
           "COMMAND": "*",
+          "INSTALL_COMPONENT_SET": "1",
           "GPUS": "1",
           "PERCENT": "1",
           "WORKING_DIRECTORY": "1"
@@ -311,6 +312,16 @@
       "rapids_test_generate_resource_spec": {
         "pargs": {
           "nargs": "2"
+        }
+      },
+      "rapids_test_install_relocatble": {
+        "pargs": {
+          "nargs": "0",
+          "flags": ["EXCLUDE_FROM_ALL"]
+        },
+        "kwargs": {
+          "INSTALL_COMPONENT_SET": "1",
+          "DESTINATION": "1"
         }
       }
     }
