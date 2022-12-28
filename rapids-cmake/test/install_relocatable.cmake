@@ -53,7 +53,7 @@ function(rapids_test_install_relocatable)
   set(multi_value)
   cmake_parse_arguments(_RAPIDS_TEST "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
-  set(to_exclude )
+  set(to_exclude)
   if(_RAPIDS_TEST_EXCLUDE_FROM_ALL)
     set(to_exclude EXCLUDE_FROM_ALL)
   endif()
@@ -66,8 +66,6 @@ function(rapids_test_install_relocatable)
   get_target_property(targets_to_install rapids_test_install_${component} TARGETS_TO_INSTALL)
   get_target_property(tests_to_run rapids_test_install_${component} TESTS_TO_RUN)
 
-  # Write out the relocatable CTestFile that we can install!
-  # Presumes a 1 to 1 mapping of test name to executable
   set(content [==[
   set(CTEST_SCRIPT_DIRECTORY ".")
   set(CTEST_RESOURCE_SPEC_FILE "./resource_spec.json")
@@ -80,37 +78,31 @@ function(rapids_test_install_relocatable)
     get_test_property(${test} LABELS labels)
     string(APPEND content "add_test(NAME [=[${test}]=] COMMAND ${command})\n")
     if(resources)
-      string(APPEND content "set_tests_properties([=[${test}]=] PROPERTIES RESOURCE_GROUPS ${resources})\n")
+      string(APPEND content
+             "set_tests_properties([=[${test}]=] PROPERTIES RESOURCE_GROUPS ${resources})\n")
     endif()
     if(labels)
       string(APPEND content "set_tests_properties([=[${test}]=] PROPERTIES LABELS ${labels})\n")
     endif()
   endforeach()
 
-  set(test_launcher_file "${CMAKE_CURRENT_BINARY_DIR}/rapids-cmake/${_RAPIDS_TEST_INSTALL_COMPONENT_SET}/CTestTestfile.cmake.to_install")
+  set(test_launcher_file
+      "${CMAKE_CURRENT_BINARY_DIR}/rapids-cmake/${_RAPIDS_TEST_INSTALL_COMPONENT_SET}/CTestTestfile.cmake.to_install")
   file(WRITE "${test_launcher_file}" "${content}")
-  install(
-      FILES "${test_launcher_file}"
-      COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET}
-      DESTINATION ${_RAPIDS_TEST_DESTINATION}
-      RENAME "CTestTestfile.cmake"
-      ${to_exclude})
+  install(FILES "${test_launcher_file}"
+          COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET}
+          DESTINATION ${_RAPIDS_TEST_DESTINATION}
+          RENAME "CTestTestfile.cmake"
+          ${to_exclude})
 
-  # We need to install the rapids-test gpu detector, and the json script
-  # we also need to write out / install the new CTestTestfile.cmake
-  install(
-      PROGRAMS "${PROJECT_BINARY_DIR}/rapids-cmake/generate_ctest_json"
-      COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET}
-      DESTINATION ${_RAPIDS_TEST_DESTINATION}
-      ${to_exclude})
-  install(
-      FILES "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/run_gpu_test.cmake"
-      COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET}
-      DESTINATION ${_RAPIDS_TEST_DESTINATION}
-      ${to_exclude})
-  install(
-      TARGETS ${targets_to_install}
-      COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET}
-      DESTINATION ${_RAPIDS_TEST_DESTINATION}
-      ${to_exclude})
+  # We need to install the rapids-test gpu detector, and the json script we also need to write out /
+  # install the new CTestTestfile.cmake
+  install(PROGRAMS "${PROJECT_BINARY_DIR}/rapids-cmake/generate_ctest_json"
+          COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET} DESTINATION ${_RAPIDS_TEST_DESTINATION}
+          ${to_exclude})
+  install(FILES "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/run_gpu_test.cmake"
+          COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET} DESTINATION ${_RAPIDS_TEST_DESTINATION}
+          ${to_exclude})
+  install(TARGETS ${targets_to_install} COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET}
+          DESTINATION ${_RAPIDS_TEST_DESTINATION} ${to_exclude})
 endfunction()

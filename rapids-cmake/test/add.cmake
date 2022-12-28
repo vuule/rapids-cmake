@@ -106,7 +106,8 @@ function(rapids_test_add)
            WORKING_DIRECTORY "${_RAPIDS_TEST_WORKING_DIRECTORY}")
 
   include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/gpu_requirements.cmake)
-  rapids_test_gpu_requirements(${_RAPIDS_TEST_NAME} GPUS ${_RAPIDS_TEST_GPUS} PERCENT ${_RAPIDS_TEST_PERCENT})
+  rapids_test_gpu_requirements(${_RAPIDS_TEST_NAME} GPUS ${_RAPIDS_TEST_GPUS}
+                               PERCENT ${_RAPIDS_TEST_PERCENT})
 
   if(_RAPIDS_TEST_INSTALL_COMPONENT_SET)
     include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/record_test_component.cmake)
@@ -125,13 +126,20 @@ function(rapids_test_add)
       else()
         set(command_for_install "./${command_or_target}")
       endif()
-      rapids_test_record_install(TARGET ${command_or_target} COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET})
+      rapids_test_record_install(TARGET ${command_or_target} COMPONENT
+                                 ${_RAPIDS_TEST_INSTALL_COMPONENT_SET})
     else()
       set(command_for_install ${command_or_target})
     endif()
-    rapids_test_record_test_component(NAME ${_RAPIDS_TEST_NAME} COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET})
-    rapids_test_record_test_command(NAME ${_RAPIDS_TEST_NAME}
-        COMMAND cmake "-Dcommand_to_run=${command_for_install}" "-Dcommand_args=${args}" -P
-        "${_rapids_run_gpu_test_script_for_install}")
+    rapids_test_record_test_component(NAME ${_RAPIDS_TEST_NAME} COMPONENT
+                                      ${_RAPIDS_TEST_INSTALL_COMPONENT_SET})
+    rapids_test_record_test_command(NAME
+                                    ${_RAPIDS_TEST_NAME}
+                                    COMMAND
+                                    cmake
+                                    "-Dcommand_to_run=${command_for_install}"
+                                    "-Dcommand_args=${args}"
+                                    -P
+                                    "${_rapids_run_gpu_test_script_for_install}")
   endif()
 endfunction()

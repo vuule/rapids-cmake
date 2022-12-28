@@ -34,9 +34,10 @@ function(rapids_test_record_install)
 
   set(options)
   set(one_value TARGET COMPONENT)
-  set(multi_value )
+  set(multi_value)
   cmake_parse_arguments(_RAPIDS_TEST "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   set(component ${_RAPIDS_TEST_COMPONENT})
-  set_property(TARGET rapids_test_install_${component} APPEND PROPERTY "TARGETS_TO_INSTALL" "${_RAPIDS_TEST_TARGET}")
+  set_property(TARGET rapids_test_install_${component} APPEND PROPERTY "TARGETS_TO_INSTALL"
+                                                                       "${_RAPIDS_TEST_TARGET}")
 endfunction()
