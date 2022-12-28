@@ -66,7 +66,8 @@ function(rapids_test_install_relocatable)
   get_target_property(targets_to_install rapids_test_install_${component} TARGETS_TO_INSTALL)
   get_target_property(tests_to_run rapids_test_install_${component} TESTS_TO_RUN)
 
-  set(content [==[
+  set(content
+      [==[
   set(CTEST_SCRIPT_DIRECTORY ".")
   set(CTEST_RESOURCE_SPEC_FILE "./resource_spec.json")
   execute_process(COMMAND ./generate_ctest_json OUTPUT_FILE "${CTEST_RESOURCE_SPEC_FILE}")
@@ -87,7 +88,8 @@ function(rapids_test_install_relocatable)
   endforeach()
 
   set(test_launcher_file
-      "${CMAKE_CURRENT_BINARY_DIR}/rapids-cmake/${_RAPIDS_TEST_INSTALL_COMPONENT_SET}/CTestTestfile.cmake.to_install")
+      "${CMAKE_CURRENT_BINARY_DIR}/rapids-cmake/${_RAPIDS_TEST_INSTALL_COMPONENT_SET}/CTestTestfile.cmake.to_install"
+  )
   file(WRITE "${test_launcher_file}" "${content}")
   install(FILES "${test_launcher_file}"
           COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET}

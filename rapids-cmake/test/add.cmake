@@ -118,7 +118,6 @@ function(rapids_test_add)
       add_library(rapids_test_install_${_RAPIDS_TEST_INSTALL_COMPONENT_SET} INTERFACE)
     endif()
 
-
     if(TARGET ${command_or_target})
       get_target_property(output_name ${command_or_target} OUTPUT_NAME)
       if(output_name)
