@@ -37,9 +37,10 @@ add_cmake_config_test(gpu_requirements-zero-percent.cmake SHOULD_FAIL "${percent
 add_cmake_config_test(init-existing-specfile.cmake)
 add_cmake_config_test(init-simple.cmake)
 
+set(wrong_component_message "No install component set [wrong_component] can be found")
 add_cmake_config_test(install_relocatable-labels.cmake)
 add_cmake_config_test(install_relocatable-simple.cmake)
-add_cmake_config_test(install_relocatable-wrong-component.cmake)
+add_cmake_config_test(install_relocatable-wrong-component.cmake SHOULD_FAIL "${wrong_component_message}")
 
 add_cmake_ctest_test(add-impossible-allocation SHOULD_FAIL "Insufficient resources for test")
 add_cmake_config_test(add-with-install-component.cmake)

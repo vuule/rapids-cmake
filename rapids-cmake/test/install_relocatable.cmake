@@ -105,6 +105,8 @@ function(rapids_test_install_relocatable)
   install(FILES "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/run_gpu_test.cmake"
           COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET} DESTINATION ${_RAPIDS_TEST_DESTINATION}
           ${to_exclude})
-  install(TARGETS ${targets_to_install} COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET}
-          DESTINATION ${_RAPIDS_TEST_DESTINATION} ${to_exclude})
+  if(targets_to_install)
+    install(TARGETS ${targets_to_install} COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET}
+            DESTINATION ${_RAPIDS_TEST_DESTINATION} ${to_exclude})
+  endif()
 endfunction()
