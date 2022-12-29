@@ -72,7 +72,7 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
     set(compile_options "-I${CUDAToolkit_INCLUDE_DIRS}")
     set(link_options ${CUDA_cudart_LIBRARY})
     set(compiler "${CMAKE_CXX_COMPILER}")
-    if(DEFINED CMAKE_CUDA_COMPILER)
+    if(NOT DEFINED CMAKE_CXX_COMPILER)
       set(compiler "${CMAKE_CUDA_COMPILER}")
     endif()
 
