@@ -46,8 +46,8 @@ files to be generated.
 function(rapids_test_generate_resource_spec DESTINATION filepath)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.test.generate_resource_spec")
 
-  if(NOT DEFINED CMAKE_CUDA_COMPILER)
-    message(FATAL_ERROR "rapids_test_generate_resource_spec Requires the CUDA language to be enabled."
+  if(NOT DEFINED CMAKE_CUDA_COMPILER AND NOT DEFINED CMAKE_CXX_COMPILER)
+    message(FATAL_ERROR "rapids_test_generate_resource_spec Requires the CUDA or C++ language to be enabled."
     )
   endif()
 
@@ -61,13 +61,22 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
 }
 ]=])
 
-  set(eval_file ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/generate_resource_spec.cu)
+  set(eval_file ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/generate_resource_spec.cpp)
   set(eval_exe ${PROJECT_BINARY_DIR}/rapids-cmake/generate_ctest_json)
   set(error_file ${PROJECT_BINARY_DIR}/rapids-cmake/detect_gpus.stderr.log)
 
   if(NOT EXISTS "${eval_exe}")
+    find_package(CUDAToolkit REQUIRED)
     file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/rapids-cmake/")
-    execute_process(COMMAND "${CMAKE_CUDA_COMPILER}" "${eval_file}" -o "${eval_exe}"
+
+    set(compile_options "-I${CUDAToolkit_INCLUDE_DIRS}")
+    set(link_options ${CUDA_cudart_LIBRARY})
+    set(compiler "${CMAKE_CXX_COMPILER}")
+    if(DEFINED CMAKE_CUDA_COMPILER)
+      set(compiler "${CMAKE_CUDA_COMPILER}")
+    endif()
+
+    execute_process(COMMAND "${compiler}" "${eval_file}" ${compile_options} ${link_options} -o "${eval_exe}"
                     OUTPUT_VARIABLE compile_output ERROR_VARIABLE compile_output COMMAND_ECHO
                                                                   STDOUT)
   endif()
