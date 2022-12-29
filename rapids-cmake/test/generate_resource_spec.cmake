@@ -76,9 +76,9 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
       set(compiler "${CMAKE_CUDA_COMPILER}")
     endif()
 
-    execute_process(COMMAND "${compiler}" "${eval_file}" ${compile_options} ${link_options} -o "${eval_exe}"
-                    OUTPUT_VARIABLE compile_output ERROR_VARIABLE compile_output COMMAND_ECHO
-                                                                  STDOUT)
+    execute_process(COMMAND "${compiler}" "${eval_file}" ${compile_options} ${link_options} -o
+                            "${eval_exe}" OUTPUT_VARIABLE compile_output
+                    ERROR_VARIABLE compile_output COMMAND_ECHO STDOUT)
   endif()
 
   if(NOT EXISTS "${eval_exe}")
