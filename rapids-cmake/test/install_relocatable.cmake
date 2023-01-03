@@ -77,7 +77,7 @@ function(rapids_test_install_relocatable)
     get_test_property(${test} INSTALL_COMMAND command)
     get_test_property(${test} RESOURCE_GROUPS resources)
     get_test_property(${test} LABELS labels)
-    string(APPEND content "add_test(NAME [=[${test}]=] COMMAND ${command})\n")
+    string(APPEND content "add_test([=[${test}]=] ${command})\n")
     if(resources)
       string(APPEND content
              "set_tests_properties([=[${test}]=] PROPERTIES RESOURCE_GROUPS ${resources})\n")

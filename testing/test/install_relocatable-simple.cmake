@@ -30,7 +30,7 @@ set(generated_testfile "${CMAKE_CURRENT_BINARY_DIR}/rapids-cmake/testing/CTestTe
 file(READ "${generated_testfile}" contents)
 
 
-set(add_test_match_strings [===[add_test(NAME [=[verify_]=] COMMAND cmake;-Dcommand_to_run=ls;-Dcommand_args=;-P;./run_gpu_test.cmake)]===])
+set(add_test_match_strings [===[add_test([=[verify_]=] cmake;-Dcommand_to_run=ls;-Dcommand_args=;-P;./run_gpu_test.cmake)]===])
 foreach(item IN LISTS add_test_match_strings)
   string(FIND "${contents}" ${item} is_found)
   if(is_found EQUAL -1)
