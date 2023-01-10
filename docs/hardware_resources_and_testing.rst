@@ -119,4 +119,3 @@ To simplify the process, here is some helper C++ code that will do the heavy lif
 
 .. literalinclude:: cpp_code_snippets/rapids_cmake_ctest_allocation.cpp
   :language: cpp
-
