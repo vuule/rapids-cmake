@@ -16,8 +16,8 @@
 
 #pragma once
 
-#include <vector>
 #include <cuda_runtime_api.h>
+#include <vector>
 
 namespace rapids_cmake {
 

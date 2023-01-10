@@ -17,17 +17,14 @@
 #include <iostream>
 #include <vector>
 
-
-int main() {
-
+int main()
+{
   // Verify we only have a single GPU visible to us
   int nDevices = 0;
   cudaGetDeviceCount(&nDevices);
 
   std::cout << "Seeing " << nDevices << " GPU devices" << std::endl;
 
-  if (nDevices == 0 || nDevices > 3) {
-    return 1;
-  }
+  if (nDevices == 0 || nDevices > 3) { return 1; }
   return 0;
 }

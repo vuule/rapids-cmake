@@ -43,4 +43,3 @@ get_test_property(simple_test INSTALL_COMMAND install_command)
 if(NOT install_command)
   message(FATAL_ERROR "Failed to record the command to run `simple_test` after installing it")
 endif()
-

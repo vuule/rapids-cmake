@@ -25,4 +25,3 @@ add_executable(verify_alloc  "${CMAKE_BINARY_DIR}/main.cu")
 
 enable_testing()
 rapids_test_add(NAME simple_test COMMAND verify_alloc INSTALL_COMPONENT_SET testing)
-

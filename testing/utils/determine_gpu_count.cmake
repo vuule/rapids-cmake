@@ -23,4 +23,3 @@ function(determine_gpu_count )
   list(LENGTH smi_output gpu_count)
   set(RAPIDS_CMAKE_TESTING_GPU_COUNT ${gpu_count} PARENT_SCOPE)
 endfunction()
-

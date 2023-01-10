@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-#include <iostream>
-#include <vector>
 #include <chrono>
+#include <iostream>
 #include <thread>
+#include <vector>
 
 #include <fcntl.h>
 #include <unistd.h>
 
 #include "../detail/file_locker.hpp"
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
   const constexpr int min_lock_id = 0;
   const constexpr int max_lock_id = 5;
 
-
   // Lock our sentinel file
   auto my_id = std::stoi(argv[1]);
-  auto lock = ctest_lock(my_id);
+  auto lock  = ctest_lock(my_id);
 
   // verify all sentinel files are locked
   auto checker = [my_id](int lock_state, int i) {

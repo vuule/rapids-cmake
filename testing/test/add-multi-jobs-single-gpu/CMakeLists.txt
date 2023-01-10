@@ -33,4 +33,3 @@ foreach(v RANGE 5)
   # this way all our tests can reside on the same gpu
   rapids_test_add(NAME concurrent_test_${v} COMMAND verify_multi_concurrent ${v} GPUS 1 PERCENT 1${v})
 endforeach()
-

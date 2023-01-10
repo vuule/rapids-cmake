@@ -37,7 +37,7 @@ Add ...
 
 ``DESTINATION``
   Relative path from the `CMAKE_INSTALL_PREFIX` to install the infrastructure.
-  This needs to be the same directory as the test exectuables
+  This needs to be the same directory as the test executables
 
 ``EXCLUDE_FROM_ALL``
   State that these install rules shouldn't be part of the default install set, and

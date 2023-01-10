@@ -55,7 +55,7 @@ As discussed above, each CMake test needs to specify the GPU resources they requ
 The easiest path for for developers is to use the :cmake:command:`rapids_test_add` which wraps each execution in a wrapper script that sets the CUDA visible devices, making tests only see the allocated device(s).
 
 For example below we have three tests, two which can run concurrently on the same GPU and one that requires a full GPU.
-This specification will allow all three tests to run concurently when a machine has 2+ GPUs with no modification of the tests!
+This specification will allow all three tests to run concurrently when a machine has 2+ GPUs with no modification of the tests!
 
 .. code-block:: cmake
 
@@ -94,7 +94,7 @@ When rapids-cmake test wrapper is insufficient
 At times the approach of using wrapper scripts is insufficient, usually due to using existing test wrappers.
 
 As discussed above, each CMake test still needs to specify the GPU resources they require to allow CTest to properly partition GPUs given the CTest parallel level.
-But in those cases the tests themselves will need to parse the CTest enviornment variables to extract what GPUs they should run on.
+But in those cases the tests themselves will need to parse the CTest environment variables to extract what GPUs they should run on.
 
 For the CMake side you can use :cmake:command:`rapids_test_gpu_requirements` to specify the requirements
 
