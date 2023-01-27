@@ -232,9 +232,13 @@ function(rapids_export type project_name)
     set(_RAPIDS_COMPONENTS_EXPORT_SET_NICE_NAMES)
 
     foreach(comp comp_export_set IN ZIP_LISTS _RAPIDS_COMPONENTS _RAPIDS_COMPONENTS_EXPORT_SET)
-      string(REGEX REPLACE "(${project_name}[-_])|([-_]export[s]?)" "" nice_export_name
+      string(REGEX REPLACE "(${project_name}[-_])|([-_]?${comp}[-_]?)|([-_]?export[s]?)" "" nice_export_name
                            "${comp_export_set}")
-      string(PREPEND nice_export_name "${comp}-")
+      if(nice_export_name STREQUAL "")
+        string(PREPEND nice_export_name "${comp}")
+      else()
+        string(PREPEND nice_export_name "${comp}-")
+      endif()
       rapids_export_component(${type} ${project_name} ${comp} ${comp_export_set}
                               ${nice_export_name} ${_RAPIDS_PROJECT_NAMESPACE})
       list(APPEND _RAPIDS_COMPONENTS_EXPORT_SET_NICE_NAMES ${nice_export_name})

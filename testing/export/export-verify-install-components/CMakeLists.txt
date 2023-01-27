@@ -22,21 +22,21 @@ add_library(fakeLib INTERFACE)
 install(TARGETS fakeLib EXPORT fake_set)
 
 add_library(fakeLib_c1 INTERFACE)
-install(TARGETS fakeLib_c1 EXPORT fake_set_c1_export)
+install(TARGETS fakeLib_c1 EXPORT fake_c1_export)
 include(${rapids-cmake-dir}/export/package.cmake)
-rapids_export_package(INSTALL CUDAToolkit fake_set_c1_export)
+rapids_export_package(INSTALL CUDAToolkit fake_c1_export)
 
 add_library(fakeLib_c2 INTERFACE)
-install(TARGETS fakeLib_c2 EXPORT fake_set_c2_exports)
+install(TARGETS fakeLib_c2 EXPORT fake_c2_exports)
 
 add_library(fakeLib_c2_lib INTERFACE)
-install(TARGETS fakeLib_c2_lib EXPORT fake_set_c2-lib_exports)
+install(TARGETS fakeLib_c2_lib EXPORT fake_c2-lib_exports)
 
 set(CMAKE_INSTALL_LIBDIR "lib64")
 rapids_export(INSTALL fake
   EXPORT_SET fake_set
   COMPONENTS c1 c2 c2
-  COMPONENTS_EXPORT_SET fake_set_c1_export fake_set_c2_exports fake_set_c2-lib_exports
+  COMPONENTS_EXPORT_SET fake_c1_export fake_c2_exports fake_c2-lib_exports
   NAMESPACE test::
   )
 
@@ -60,12 +60,12 @@ set(fake_files
   fake/lib64/cmake/fake/fake-targets.cmake
 )
 set(c1_files
-  c1/lib64/cmake/fake/fake-c1-set_c1-dependencies.cmake
-  c1/lib64/cmake/fake/fake-c1-set_c1-targets.cmake
+  c1/lib64/cmake/fake/fake-c1-dependencies.cmake
+  c1/lib64/cmake/fake/fake-c1-targets.cmake
 )
 set(c2_files
-  c2/lib64/cmake/fake/fake-c2-set_c2-targets.cmake
-  c2/lib64/cmake/fake/fake-c2-set_c2-lib-targets.cmake
+  c2/lib64/cmake/fake/fake-c2-targets.cmake
+  c2/lib64/cmake/fake/fake-c2-lib-targets.cmake
 )
 
 foreach(file IN LISTS fake_files c1_files c2_files)
